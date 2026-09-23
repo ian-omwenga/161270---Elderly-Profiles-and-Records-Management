@@ -1,0 +1,960 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f6f8;
+    color: #263238;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.app-container {
+    min-height: 100vh;
+}
+
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.topbar {
+    height: 58px;
+    background: #ffffff;
+    border-bottom: 1px solid #e7e9ec;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 30px;
+}
+
+.breadcrumb {
+    font-size: 12px;
+    color: #7d858d;
+}
+
+.breadcrumb span:first-child {
+    color: #343b40;
+    font-weight: 600;
+}
+
+.separator {
+    margin: 0 8px;
+    color: #b4bac0;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+
+/* SEARCH */
+
+.search-box {
+    width: 250px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+
+    background: #f6f7f8;
+    border: 1px solid #e6e8eb;
+    border-radius: 6px;
+
+    padding: 0 10px;
+}
+
+.search-box span {
+    color: #879099;
+    font-size: 18px;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+
+    padding-left: 7px;
+
+    font-size: 11px;
+}
+
+
+/* NOTIFICATIONS */
+
+.notification-btn {
+    border: none;
+    background: transparent;
+    font-size: 17px;
+    position: relative;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 1px;
+    right: 0;
+
+    width: 6px;
+    height: 6px;
+
+    background: #e53935;
+    border-radius: 50%;
+}
+
+
+/* USER MENU */
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.small-avatar {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: #e8edff;
+
+    color: #4c63d2;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.user-menu-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-menu-text strong {
+    font-size: 11px;
+}
+
+.user-menu-text small {
+    font-size: 9px;
+    color: #90979d;
+}
+
+.dropdown-arrow {
+    color: #777;
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.dashboard {
+    padding: 20px 30px 40px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+
+/* =========================================
+   PROFILE CARD
+========================================= */
+
+.profile-card {
+    background: white;
+
+    border-radius: 10px;
+    border: 1px solid #e6e8eb;
+
+    min-height: 145px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px 25px;
+
+    box-shadow: 0 2px 7px rgba(0,0,0,0.05);
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.profile-avatar {
+    width: 70px;
+    height: 70px;
+
+    border-radius: 50%;
+
+    background: #dce2ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #5366c9;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    position: relative;
+}
+
+.online-status {
+    position: absolute;
+
+    width: 14px;
+    height: 14px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    right: 0;
+    bottom: 4px;
+
+    border: 2px solid white;
+}
+
+.profile-info h1 {
+    font-size: 20px;
+    margin-bottom: 3px;
+}
+
+.patient-id {
+    font-size: 10px;
+    color: #6571c9;
+}
+
+.profile-info p {
+    font-size: 11px;
+    color: #777f86;
+    max-width: 600px;
+    margin: 8px 0 12px;
+    line-height: 1.5;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.call-btn,
+.message-btn {
+    padding: 7px 12px;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+}
+
+.call-btn {
+    background: #147ed1;
+    border: 1px solid #147ed1;
+    color: white;
+}
+
+.message-btn {
+    background: white;
+    border: 1px solid #d8dce0;
+    color: #505960;
+}
+
+
+/* PROFILE RIGHT */
+
+.profile-right {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.adherence-box {
+    min-width: 130px;
+}
+
+.adherence-box span,
+.last-update span {
+    display: block;
+    font-size: 8px;
+    color: #858d94;
+    margin-bottom: 3px;
+}
+
+.adherence-box strong {
+    display: block;
+    font-size: 15px;
+    color: #1a9b4b;
+}
+
+.adherence-box small {
+    font-size: 8px;
+    color: #888;
+}
+
+.progress-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    margin: 4px 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #22a954;
+    border-radius: 5px;
+}
+
+.last-update strong {
+    font-size: 10px;
+}
+
+
+/* =========================================
+   STATISTICS
+========================================= */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 12px;
+
+    margin-top: 12px;
+}
+
+.stat-card {
+    background: white;
+
+    min-height: 75px;
+
+    border: 1px solid #e7e9ec;
+    border-radius: 6px;
+
+    padding: 14px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    position: relative;
+}
+
+.stat-card span {
+    display: block;
+
+    font-size: 8px;
+
+    color: #858c92;
+
+    margin-bottom: 5px;
+}
+
+.stat-card strong {
+    display: block;
+
+    font-size: 14px;
+}
+
+.stat-card small {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    font-size: 8px;
+}
+
+.stat-icon {
+    width: 27px;
+    height: 27px;
+
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef3ff;
+
+    color: #5269d7;
+
+    font-size: 15px;
+}
+
+.positive {
+    color: #1fa34a;
+}
+
+.negative {
+    color: #e84a5a;
+}
+
+
+/* =========================================
+   CONTENT GRID
+========================================= */
+
+.content-grid {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 14px;
+
+    margin-top: 14px;
+}
+
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+.card {
+    background: white;
+
+    border: 1px solid #e6e8eb;
+
+    border-radius: 7px;
+
+    padding: 15px;
+}
+
+
+/* =========================================
+   CARD HEADER
+========================================= */
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.card-header h2,
+.alerts-header h2,
+.dietary-card h2 {
+    font-size: 13px;
+    margin-bottom: 3px;
+}
+
+.card-header p,
+.dietary-card p {
+    font-size: 9px;
+    color: #8a9197;
+}
+
+.view-button {
+    border: 1px solid #e3e5e8;
+    background: white;
+
+    padding: 5px 8px;
+
+    border-radius: 10px;
+
+    font-size: 7px;
+
+    color: #666;
+}
+
+
+/* =========================================
+   HEALTH CHART
+========================================= */
+
+.health-trends {
+    height: 275px;
+}
+
+.chart-container {
+    display: flex;
+
+    height: 190px;
+
+    margin-top: 15px;
+}
+
+.y-axis {
+    width: 25px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    font-size: 8px;
+    color: #a2a7ac;
+
+    padding-bottom: 10px;
+}
+
+.chart {
+    flex: 1;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.grid-line {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    border-top: 1px dashed #dfe3e7;
+}
+
+.line-1 {
+    top: 10%;
+}
+
+.line-2 {
+    top: 35%;
+}
+
+.line-3 {
+    top: 60%;
+}
+
+.line-4 {
+    top: 85%;
+}
+
+.chart svg {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    z-index: 2;
+}
+
+.blue-line,
+.green-line,
+.red-line {
+    fill: none;
+
+    stroke-width: 2;
+
+    vector-effect: non-scaling-stroke;
+}
+
+.blue-line {
+    stroke: #2785f2;
+}
+
+.green-line {
+    stroke: #35b86b;
+}
+
+.red-line {
+    stroke: #ff4055;
+}
+
+.chart-days {
+    margin-left: 25px;
+
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 8px;
+    color: #999;
+}
+
+
+/* =========================================
+   CAREGIVER VISITS
+========================================= */
+
+.caregiver-card {
+    min-height: 210px;
+}
+
+.history-link {
+    font-size: 8px;
+    color: #167bd3;
+    text-decoration: none;
+}
+
+.visit {
+    display: flex;
+
+    align-items: flex-start;
+
+    padding: 13px 0;
+
+    border-bottom: 1px solid #eeeeee;
+
+    gap: 10px;
+}
+
+.visit:last-child {
+    border-bottom: none;
+}
+
+.visit-avatar {
+    width: 27px;
+    height: 27px;
+
+    border-radius: 50%;
+
+    background: #dfe5ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 9px;
+    font-weight: bold;
+
+    color: #5368ce;
+}
+
+.visit-avatar.muted {
+    background: #edf0f2;
+    color: #8b9298;
+}
+
+.visit-content {
+    flex: 1;
+}
+
+.visit-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.visit-top strong {
+    font-size: 9px;
+}
+
+.visit-top span {
+    font-size: 8px;
+    color: #999;
+}
+
+.visit-content > small {
+    font-size: 8px;
+    color: #8b9298;
+}
+
+.visit-content p {
+    font-size: 9px;
+    color: #687078;
+    font-style: italic;
+
+    margin-top: 5px;
+
+    line-height: 1.4;
+}
+
+.visit-arrow {
+    color: #999;
+}
+
+
+/* =========================================
+   ALERTS
+========================================= */
+
+.alerts-card {
+    padding: 0;
+
+    overflow: hidden;
+
+    border-left: 3px solid #ff334f;
+}
+
+.alerts-header {
+    padding: 13px 15px 5px;
+}
+
+.alerts-header h2 {
+    color: #ff334f;
+}
+
+.alert-item {
+    margin: 8px 10px;
+
+    padding: 10px;
+
+    background: #fff5f6;
+
+    border-radius: 5px;
+}
+
+.alert-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.alert-title strong {
+    font-size: 8px;
+}
+
+.alert-title span {
+    font-size: 7px;
+    color: #999;
+}
+
+.alert-item p {
+    font-size: 8px;
+
+    color: #747b81;
+
+    line-height: 1.4;
+
+    margin: 7px 0;
+}
+
+.alert-actions {
+    display: flex;
+
+    gap: 7px;
+}
+
+.dismiss-btn,
+.action-btn {
+    font-size: 7px;
+
+    padding: 4px 7px;
+
+    border-radius: 3px;
+}
+
+.dismiss-btn {
+    background: white;
+
+    border: 1px solid #d5d8db;
+
+    color: #666;
+}
+
+.action-btn {
+    background: #ff3150;
+
+    border: 1px solid #ff3150;
+
+    color: white;
+}
+
+
+/* =========================================
+   MEDICATION
+========================================= */
+
+.medication-card {
+    padding-bottom: 10px;
+}
+
+.medication-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+.medication-icon {
+    width: 23px;
+    height: 23px;
+
+    border-radius: 50%;
+
+    background: #edf0f2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 10px;
+
+    color: #777;
+}
+
+.completed .medication-icon {
+    background: #e2f7e9;
+    color: #20a653;
+}
+
+.medication-info {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.medication-info strong {
+    font-size: 9px;
+}
+
+.medication-info span {
+    font-size: 8px;
+    color: #8a9197;
+    margin-top: 2px;
+}
+
+.med-status {
+    font-size: 6px;
+
+    padding: 3px 5px;
+
+    border-radius: 3px;
+}
+
+.taken {
+    background: #dff6e6;
+    color: #1b9b4a;
+}
+
+.pending {
+    background: #f0f1f2;
+    color: #777;
+}
+
+.full-medication {
+    width: 100%;
+
+    border: none;
+
+    background: transparent;
+
+    padding-top: 12px;
+
+    font-size: 8px;
+
+    color: #666;
+}
+
+
+/* =========================================
+   DIETARY
+========================================= */
+
+.dietary-card {
+    padding: 14px;
+}
+
+.diet-item {
+    margin-top: 13px;
+}
+
+.diet-label {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 8px;
+
+    margin-bottom: 5px;
+}
+
+.diet-label span {
+    color: #777;
+}
+
+.diet-label strong {
+    font-size: 8px;
+}
+
+.diet-progress {
+    height: 4px;
+
+    background: #e9ebed;
+
+    border-radius: 4px;
+}
+
+.diet-progress div {
+    height: 100%;
+
+    background: #2587e8;
+
+    border-radius: 4px;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .profile-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .profile-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .breadcrumb {
+        display: none;
+    }
+
+    .search-box {
+        width: 150px;
+    }
+
+    .dashboard {
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-left {
+        align-items: flex-start;
+    }
+
+    .profile-right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+}
