@@ -1,49 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Family Overview | ElderCare</title>
 
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet"
+          href="{{ asset('css/dashboard.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
 <div class="app-container">
 
-    <!-- =========================
+    <!-- TOP NAVIGATION -->
 
     <header class="topbar">
 
         <div class="breadcrumb">
             <span>Dashboard</span>
-            <span class="separator">/</span>
-            <span>Family Overview</span>
+            <span>/</span>
+            <strong>Family Overview</strong>
         </div>
 
         <div class="topbar-right">
 
             <div class="search-box">
-                <span>⌕</span>
-                <input type="text" placeholder="Search records, patients...">
+                <input
+                    type="text"
+                    placeholder="Search records, patients..."
+                >
             </div>
 
-            <button class="notification-btn">
-                
-                <span class="notification-dot"></span>
-            </button>
+            <div class="notification">
+                <a href="#">
+                    Notifications
+                    @if($alerts->count() > 0)
+                        <span class="notification-count">
+                            {{ $alerts->count() }}
+                        </span>
+                    @endif
+                </a>
+            </div>
 
             <div class="user-menu">
-                <div class="small-avatar">U</div>
+                <span class="user-name">
+                    {{ auth()->user()->name }}
+                </span>
 
-                <div class="user-menu-text">
-                    <strong>User</strong>
-                    <small>Family Member</small>
-                </div>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
 
-                <span class="dropdown-arrow">⌄</span>
+                    <button type="submit" class="logout-btn">
+                        Logout
+                    </button>
+                </form>
             </div>
 
         </div>
@@ -51,524 +68,517 @@
     </header>
 
 
-    <!-- =========================
-         MAIN CONTENT
-    ========================== -->
-    <main class="dashboard">
+    <!-- MAIN CONTENT -->
 
-        <!-- =========================
-             ELDER PROFILE HEADER
-        ========================== -->
-        <section class="profile-card">
+    <main class="dashboard-content">
 
-            <div class="profile-left">
+        <!-- ELDER HEADER -->
 
-                <div class="profile-avatar">
-                    U
-                    <span class="online-status"></span>
+        <section class="elder-header">
+
+            <div class="elder-information">
+
+                <div class="elder-avatar">
+                    {{ strtoupper(substr($elder->full_name, 0, 1)) }}
                 </div>
 
-                <div class="profile-info">
+                <div>
 
-                    <h1>User</h1>
-
-                    <span class="patient-id">
-                        Patient ID: ELR-5421
-                    </span>
-
-                    <p>
-                        Currently residing at Home Care Unit.
-                        Latest health status shows stable mood,
-                        with slight variations in appetite over the
-                        past 48 hours.
+                    <p class="section-label">
+                        ELDER PROFILE
                     </p>
 
-                    <div class="profile-actions">
+                    <h1>
+                        {{ $elder->full_name }}
+                    </h1>
 
-                        <button class="call-btn">
-                            ☎ Call Caretaker
-                        </button>
+                    <p class="elder-description">
 
-                        <button class="message-btn">
-                            ✉ Message Support
-                        </button>
+                        @if($elder->medical_conditions)
+                            {{ $elder->medical_conditions }}
+                        @else
+                            No medical conditions recorded.
+                        @endif
 
-                    </div>
+                    </p>
 
                 </div>
 
             </div>
 
 
-            <div class="profile-right">
+            <div class="elder-actions">
 
-                <div class="adherence-box">
+                <a
+                    href="{{ route('elder.profile.edit', $elder->id) }}"
+                    class="primary-button"
+                >
+                    Edit Profile
+                </a>
 
-                    <span>MEDICATION ADHERENCE</span>
-
-                    <strong>94%</strong>
-
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 94%;"></div>
-                    </div>
-
-                    <small>Target: 95%</small>
-
-                </div>
-
-
-                <div class="last-update">
-
-                    <span>LAST UPDATE</span>
-
-                    <strong>Today, 9:45 AM</strong>
-
-                </div>
+                <a
+                    href="{{ route('visits.index', $elder->id) }}"
+                    class="secondary-button"
+                >
+                    View Visits
+                </a>
 
             </div>
 
         </section>
 
 
-        <!-- =========================
-             HEALTH STATISTICS
-        ========================== -->
-        <section class="stats-grid">
+        <!-- HEALTH SUMMARY -->
 
-            <div class="stat-card">
+        <section class="summary-grid">
 
-                <div class="stat-icon heart">
-                    ♡
-                </div>
+            <div class="summary-card">
 
-                <div>
-                    <span>AVG HEART RATE</span>
-                    <strong>72 BPM</strong>
-                </div>
+                <p class="card-label">
+                    MOOD
+                </p>
 
-                <small class="positive">↗ 2%</small>
+                <h2>
+                    {{ $latestMood }}/5
+                </h2>
 
-            </div>
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon sleep">
-                    ◷
-                </div>
-
-                <div>
-                    <span>SLEEP DURATION</span>
-                    <strong>7h 45m</strong>
-                </div>
-
-                <small class="negative">↘ 12m</small>
+                <p class="card-description">
+                    Latest recorded mood
+                </p>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="summary-card">
 
-                <div class="stat-icon weight">
-                    ≈
-                </div>
+                <p class="card-label">
+                    APPETITE
+                </p>
 
-                <div>
-                    <span>WEIGHT</span>
-                    <strong>85 kg</strong>
-                </div>
+                <h2>
+                    {{ $latestAppetite }}/5
+                </h2>
 
-                <small class="positive">↗ 15%</small>
+                <p class="card-description">
+                    Latest recorded appetite
+                </p>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="summary-card">
 
-                <div class="stat-icon pain">
-                    ♧
-                </div>
+                <p class="card-label">
+                    PAIN LEVEL
+                </p>
 
-                <div>
-                    <span>AVG PAIN LEVEL</span>
-                    <strong>2.1 / 10</strong>
-                </div>
+                <h2>
+                    {{ $latestPain }}/5
+                </h2>
 
-                <small class="negative">↘ 0.5</small>
+                <p class="card-description">
+                    Latest recorded pain
+                </p>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <p class="card-label">
+                    MEDICATION ADHERENCE
+                </p>
+
+                <h2>
+                    {{ $medicationAdherence }}%
+                </h2>
+
+                <p class="card-description">
+                    Based on recorded visits
+                </p>
 
             </div>
 
         </section>
 
 
-        <!-- =========================
-             TWO COLUMN CONTENT
-        ========================== -->
-        <section class="content-grid">
+        <!-- TWO COLUMN SECTION -->
 
+        <section class="dashboard-grid">
 
-            <!-- =========================
-                 LEFT COLUMN
-            ========================== -->
-            <div class="left-column">
+            <!-- HEALTH TRENDS -->
 
+            <div class="panel health-panel">
 
-                <!-- HEALTH TRENDS -->
-                <div class="card health-trends">
+                <div class="panel-header">
 
-                    <div class="card-header">
-
-                        <div>
-                            <h2>Health Trends</h2>
-                            <p>Subjective metrics over the last 7 days</p>
-                        </div>
-
-                        <button class="view-button">
-                            WEEKLY VIEW
-                        </button>
-
-                    </div>
-
-
-                    <!-- Simple CSS chart -->
-                    <div class="chart-container">
-
-                        <div class="y-axis">
-                            <span>12</span>
-                            <span>10</span>
-                            <span>8</span>
-                            <span>6</span>
-                            <span>4</span>
-                            <span>2</span>
-                        </div>
-
-                        <div class="chart">
-
-                            <div class="grid-line line-1"></div>
-                            <div class="grid-line line-2"></div>
-                            <div class="grid-line line-3"></div>
-                            <div class="grid-line line-4"></div>
-
-                            <svg viewBox="0 0 700 220"
-                                 preserveAspectRatio="none">
-
-                                <polyline
-                                    points="0,130 100,155 200,115 300,165 400,130 500,100 600,115 700,125"
-                                    class="blue-line"
-                                />
-
-                                <polyline
-                                    points="0,145 100,155 200,120 300,170 400,135 500,105 600,110 700,125"
-                                    class="green-line"
-                                />
-
-                                <polyline
-                                    points="0,185 100,160 200,195 300,165 400,185 500,200 600,190 700,195"
-                                    class="red-line"
-                                />
-
-                            </svg>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-days">
-                        <span>Mon</span>
-                        <span>Tue</span>
-                        <span>Wed</span>
-                        <span>Thu</span>
-                        <span>Fri</span>
-                        <span>Sat</span>
-                        <span>Sun</span>
-                    </div>
-
-                </div>
-
-
-                <!-- CAREGIVER VISITS -->
-                <div class="card caregiver-card">
-
-                    <div class="card-header">
-
-                        <div>
-                            <h2>Caregiver Visit Records</h2>
-                            <p>Most recent observations and clinical notes</p>
-                        </div>
-
-                        <a href="#" class="history-link">
-                            View History
-                        </a>
-
-                    </div>
-
-
-                    <div class="visit">
-
-                        <div class="visit-avatar">
-                            U
-                        </div>
-
-                        <div class="visit-content">
-
-                            <div class="visit-top">
-
-                                <strong>User</strong>
-
-                                <span>
-                                    Today, 9:45 AM
-                                </span>
-
-                            </div>
-
-                            <small>Caregiver</small>
-
-                            <p>
-                                "Patient was in high spirits.
-                                Completed morning exercises and
-                                finished breakfast."
-                            </p>
-
-                        </div>
-
-                        <span class="visit-arrow">›</span>
-
-                    </div>
-
-
-                    <div class="visit">
-
-                        <div class="visit-avatar muted">
-                            U
-                        </div>
-
-                        <div class="visit-content">
-
-                            <div class="visit-top">
-
-                                <strong>User</strong>
-
-                                <span>
-                                    Yesterday, 2:00 PM
-                                </span>
-
-                            </div>
-
-                            <small>Physical Therapist</small>
-
-                            <p>
-                                "Patient has lowered body mobility.
-                                Progressing well with assisted walking."
-                            </p>
-
-                        </div>
-
-                        <span class="visit-arrow">›</span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- =========================
-                 RIGHT COLUMN
-            ========================== -->
-            <div class="right-column">
-
-
-                <!-- SYSTEM ALERTS -->
-                <div class="card alerts-card">
-
-                    <div class="alerts-header">
+                    <div>
+                        <p class="section-label">
+                            HEALTH MONITORING
+                        </p>
 
                         <h2>
-                            ⓘ System Alerts
+                            Health Trends
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="healthChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- ALERTS -->
+
+            <div class="panel alerts-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <p class="section-label">
+                            MONITORING
+                        </p>
+
+                        <h2>
+                            System Alerts
+                        </h2>
+                    </div>
+
+                    <span class="alert-count">
+                        {{ $alerts->count() }}
+                    </span>
+
+                </div>
+
+
+                @forelse($alerts as $alert)
+
+                    <div class="alert-item">
+
+                        <div class="alert-content">
+
+                            <h3>
+                                Alert
+                            </h3>
+
+                            <p>
+                                {{ $alert->message }}
+                            </p>
+
+                            <small>
+                                {{ \Carbon\Carbon::parse($alert->created_at)->diffForHumans() }}
+                            </small>
+
+                        </div>
+
+                        <div class="alert-actions">
+
+                            <form
+                                method="POST"
+                                action="{{ route('alerts.read', $alert->id) }}"
+                            >
+
+                                @csrf
+                                @method('PATCH')
+
+                                <button type="submit">
+                                    Mark as read
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <div class="empty-state">
+
+                        <h3>
+                            No active alerts
+                        </h3>
+
+                        <p>
+                            There are currently no unread alerts for this elder.
+                        </p>
+
+                    </div>
+
+                @endforelse
+
+            </div>
+
+        </section>
+
+
+        <!-- CARE VISITS -->
+
+        <section class="panel visits-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <p class="section-label">
+                        CARE HISTORY
+                    </p>
+
+                    <h2>
+                        Recent Caregiver Visits
+                    </h2>
+
+                </div>
+
+                <a
+                    href="{{ route('visits.index', $elder->id) }}"
+                    class="view-link"
+                >
+                    View History
+                </a>
+
+            </div>
+
+
+            <div class="visits-list">
+
+                @forelse($recentVisits as $visit)
+
+                    <div class="visit-item">
+
+                        <div class="caregiver-avatar">
+
+                            {{ strtoupper(substr($visit->caregiver_name ?? 'C', 0, 1)) }}
+
+                        </div>
+
+
+                        <div class="visit-information">
+
+                            <div class="visit-top">
+
+                                <h3>
+                                    {{ $visit->caregiver_name ?? 'Caregiver' }}
+                                </h3>
+
+                                <span>
+
+                                    {{ \Carbon\Carbon::parse($visit->visit_date)->format('d M Y, H:i') }}
+
+                                </span>
+
+                            </div>
+
+
+                            <p>
+
+                                @if($visit->visit_note)
+                                    {{ $visit->visit_note }}
+                                @else
+                                    No visit note was recorded.
+                                @endif
+
+                            </p>
+
+
+                            <div class="visit-metrics">
+
+                                <span>
+                                    Mood: {{ $visit->mood_score ?? 'N/A' }}/5
+                                </span>
+
+                                <span>
+                                    Appetite: {{ $visit->appetite_score ?? 'N/A' }}/5
+                                </span>
+
+                                <span>
+                                    Pain: {{ $visit->pain_level ?? 'N/A' }}/5
+                                </span>
+
+                                <span>
+                                    Medication:
+
+                                    @if($visit->medication_taken)
+                                        Taken
+                                    @else
+                                        Not taken
+                                    @endif
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <div class="empty-state">
+
+                        <h3>
+                            No care visits recorded
+                        </h3>
+
+                        <p>
+                            Caregiver visit records will appear here once they are submitted.
+                        </p>
+
+                    </div>
+
+                @endforelse
+
+            </div>
+
+        </section>
+
+
+        <!-- ELDER PROFILE SUMMARY -->
+
+        <section class="profile-grid">
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="section-label">
+                            PERSONAL INFORMATION
+                        </p>
+
+                        <h2>
+                            Elder Profile
                         </h2>
 
                     </div>
 
+                    <a
+                        href="{{ route('elder.profile.edit', $elder->id) }}"
+                        class="view-link"
+                    >
+                        Edit
+                    </a>
 
-                    <div class="alert-item">
+                </div>
 
-                        <div class="alert-title">
-                            <strong>MISSED LUNCH RECORD</strong>
-                            <span>2 hours ago</span>
-                        </div>
 
-                        <p>
-                            Caregiver reported minimal appetite
-                            during the noon visit.
-                        </p>
+                <div class="profile-details">
 
-                        <div class="alert-actions">
-
-                            <button class="dismiss-btn">
-                                DISMISS
-                            </button>
-
-                            <button class="action-btn">
-                                ACTION
-                            </button>
-
-                        </div>
-
+                    <div>
+                        <span>Full Name</span>
+                        <strong>
+                            {{ $elder->full_name }}
+                        </strong>
                     </div>
 
+                    <div>
+                        <span>Date of Birth</span>
+                        <strong>
+                            {{ \Carbon\Carbon::parse($elder->date_of_birth)->format('d M Y') }}
+                        </strong>
+                    </div>
 
-                    <div class="alert-item">
+                    <div>
+                        <span>Mobility</span>
+                        <strong>
+                            {{ $elder->mobility_status ?? 'Not recorded' }}
+                        </strong>
+                    </div>
 
-                        <div class="alert-title">
-                            <strong>LOW MOBILITY DETECTED</strong>
-                            <span>5 hours ago</span>
-                        </div>
+                    <div>
+                        <span>Emergency Contact</span>
+                        <strong>
+                            {{ $elder->emergency_contact_name ?? 'Not recorded' }}
+                        </strong>
+                    </div>
 
-                        <p>
-                            Step count is 40% below daily average
-                            for this time.
+                    <div>
+                        <span>Emergency Phone</span>
+                        <strong>
+                            {{ $elder->emergency_contact_phone ?? 'Not recorded' }}
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="section-label">
+                            MEDICAL INFORMATION
                         </p>
 
-                        <div class="alert-actions">
-
-                            <button class="dismiss-btn">
-                                DISMISS
-                            </button>
-
-                            <button class="action-btn">
-                                ACTION
-                            </button>
-
-                        </div>
+                        <h2>
+                            Care Information
+                        </h2>
 
                     </div>
 
                 </div>
 
 
-                <!-- MEDICATION -->
-                <div class="card medication-card">
+                <div class="medical-information">
 
-                    <div class="card-header">
+                    <div>
 
-                        <div>
-                            <h2>Daily Medication</h2>
-                            <p>Scheduled dosages for today</p>
-                        </div>
+                        <h3>
+                            Medical Conditions
+                        </h3>
 
-                        <span>◷</span>
-
-                    </div>
-
-
-                    <div class="medication-item completed">
-
-                        <div class="medication-icon">
-                            ✓
-                        </div>
-
-                        <div class="medication-info">
-
-                            <strong>10:00 AM</strong>
-
-                            <span>10mg • Blood Pressure</span>
-
-                        </div>
-
-                        <span class="med-status taken">
-                            TAKEN
-                        </span>
+                        <p>
+                            {{ $elder->medical_conditions ?? 'No conditions recorded.' }}
+                        </p>
 
                     </div>
 
 
-                    <div class="medication-item">
+                    <div>
 
-                        <div class="medication-icon">
-                            ◷
-                        </div>
+                        <h3>
+                            Medications
+                        </h3>
 
-                        <div class="medication-info">
-
-                            <strong>12:30 PM</strong>
-
-                            <span>500mg • Diabetes</span>
-
-                        </div>
-
-                        <span class="med-status pending">
-                            UPCOMING
-                        </span>
+                        <p>
+                            {{ $elder->medications ?? 'No medications recorded.' }}
+                        </p>
 
                     </div>
 
 
-                    <div class="medication-item">
+                    <div>
 
-                        <div class="medication-icon">
-                            ◷
-                        </div>
+                        <h3>
+                            Allergies
+                        </h3>
 
-                        <div class="medication-info">
-
-                            <strong>08:00 PM</strong>
-
-                            <span>20mg • Cholesterol</span>
-
-                        </div>
-
-                        <span class="med-status pending">
-                            PENDING
-                        </span>
+                        <p>
+                            {{ $elder->allergies ?? 'No allergies recorded.' }}
+                        </p>
 
                     </div>
 
 
-                    <button class="full-medication">
-                        ⌕ Full Medication Schedule
-                    </button>
+                    <div>
 
-                </div>
+                        <h3>
+                            Care Preferences
+                        </h3>
 
-
-                <!-- DIETARY ADHERENCE -->
-                <div class="card dietary-card">
-
-                    <div class="diet-header">
-
-                        <div>
-                            <h2>Dietary Adherence</h2>
-                            <p>Calories & hydration</p>
-                        </div>
-
-                    </div>
-
-
-                    <div class="diet-item">
-
-                        <div class="diet-label">
-                            <span>Hydration</span>
-                            <strong>1,400 / 2,000 ml</strong>
-                        </div>
-
-                        <div class="diet-progress">
-                            <div style="width: 70%;"></div>
-                        </div>
-
-                    </div>
-
-
-                    <div class="diet-item">
-
-                        <div class="diet-label">
-                            <span>Nutrition</span>
-                            <strong>85% Intake</strong>
-                        </div>
-
-                        <div class="diet-progress">
-                            <div style="width: 85%;"></div>
-                        </div>
+                        <p>
+                            {{ $elder->care_preferences ?? 'No preferences recorded.' }}
+                        </p>
 
                     </div>
 
@@ -582,5 +592,106 @@
 
 </div>
 
+
+<!-- HEALTH CHART -->
+
+<script>
+
+    const trendData = @json($healthTrends);
+
+    const labels = trendData.map(item => {
+
+        return new Date(item.visit_date).toLocaleDateString(
+            'en-GB',
+            {
+                day: '2-digit',
+                month: 'short'
+            }
+        );
+
+    });
+
+
+    const moodData = trendData.map(item => item.mood_score);
+    const appetiteData = trendData.map(item => item.appetite_score);
+    const painData = trendData.map(item => item.pain_level);
+
+
+    const ctx = document
+        .getElementById('healthChart')
+        .getContext('2d');
+
+
+    new Chart(ctx, {
+
+        type: 'line',
+
+        data: {
+
+            labels: labels,
+
+            datasets: [
+
+                {
+                    label: 'Mood',
+                    data: moodData,
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+                },
+
+                {
+                    label: 'Appetite',
+                    data: appetiteData,
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+                },
+
+                {
+                    label: 'Pain',
+                    data: painData,
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+                }
+
+            ]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            scales: {
+
+                y: {
+                    beginAtZero: true,
+                    max: 5,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+
+            },
+
+            plugins: {
+
+                legend: {
+                    display: true
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
 </body>
+
 </html>
