@@ -9,8 +9,7 @@
 
     <title>Family Overview | ElderCare</title>
 
-    <link rel="stylesheet"
-          href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>

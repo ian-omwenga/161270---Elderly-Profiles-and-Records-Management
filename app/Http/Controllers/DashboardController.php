@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-
 class DashboardController extends Controller
 {
     public function index()
@@ -13,26 +12,40 @@ class DashboardController extends Controller
         $userId = Auth::id();
 
         /*
-        Get the elder profile belonging to the logged-in user
+        |--------------------------------------------------------------------------
+        | Get the elder profile belonging to the logged-in family user
+        |--------------------------------------------------------------------------
         */
+
         $elder = DB::table('elder_profiles')
             ->where('created_by', $userId)
             ->first();
 
         /*
-        If the user has not created an elder profile yet
+        |--------------------------------------------------------------------------
+        | If the user has not created an elder profile yet
+        |--------------------------------------------------------------------------
         */
+
         if (!$elder) {
             return redirect()
-                ->route('elder.profile.create')
+                ->route('elder.create')
                 ->with('info', 'Please complete the elder profile first.');
         }
 
         /*
-        Latest care visit
+        |--------------------------------------------------------------------------
+        | Latest care visit
+        |--------------------------------------------------------------------------
         */
+
         $latestVisit = DB::table('care_visits')
-            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
+            ->leftJoin(
+                'users',
+                'care_visits.caregiver_id',
+                '=',
+                'users.id'
+            )
             ->where('care_visits.elder_id', $elder->id)
             ->select(
                 'care_visits.*',
@@ -42,10 +55,18 @@ class DashboardController extends Controller
             ->first();
 
         /*
-        Recent care visits
+        |--------------------------------------------------------------------------
+        | Recent care visits
+        |--------------------------------------------------------------------------
         */
+
         $recentVisits = DB::table('care_visits')
-            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
+            ->leftJoin(
+                'users',
+                'care_visits.caregiver_id',
+                '=',
+                'users.id'
+            )
             ->where('care_visits.elder_id', $elder->id)
             ->select(
                 'care_visits.*',
@@ -56,8 +77,11 @@ class DashboardController extends Controller
             ->get();
 
         /*
-        Health trend data
+        |--------------------------------------------------------------------------
+        | Health trend data
+        |--------------------------------------------------------------------------
         */
+
         $healthTrends = DB::table('care_visits')
             ->where('elder_id', $elder->id)
             ->orderBy('visit_date')
@@ -70,8 +94,11 @@ class DashboardController extends Controller
             ]);
 
         /*
-        Active alerts
+        |--------------------------------------------------------------------------
+        | Active alerts
+        |--------------------------------------------------------------------------
         */
+
         $alerts = DB::table('alerts')
             ->where('family_user_id', $userId)
             ->where('is_read', false)
@@ -80,8 +107,11 @@ class DashboardController extends Controller
             ->get();
 
         /*
-        Medication adherence based on care visits where medication_taken was recorded.
+        |--------------------------------------------------------------------------
+        | Medication adherence
+        |--------------------------------------------------------------------------
         */
+
         $medicationTotal = DB::table('care_visits')
             ->where('elder_id', $elder->id)
             ->whereNotNull('medication_taken')
@@ -97,11 +127,20 @@ class DashboardController extends Controller
             : 0;
 
         /*
-        Latest health measurements
+        |--------------------------------------------------------------------------
+        | Latest health measurements
+        |--------------------------------------------------------------------------
         */
+
         $latestMood = $latestVisit?->mood_score ?? 0;
         $latestAppetite = $latestVisit?->appetite_score ?? 0;
         $latestPain = $latestVisit?->pain_level ?? 0;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Send data to dashboard
+        |--------------------------------------------------------------------------
+        */
 
         return view('dashboard', compact(
             'elder',
