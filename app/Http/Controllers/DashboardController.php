@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -11,21 +11,10 @@ class DashboardController extends Controller
     {
         $userId = Auth::id();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Get the elder profile belonging to the logged-in family user
-        |--------------------------------------------------------------------------
-        */
-
+        // Find the elder profile created by this account.
         $elder = DB::table('elder_profiles')
             ->where('created_by', $userId)
             ->first();
-
-        /*
-        |--------------------------------------------------------------------------
-        | If the user has not created an elder profile yet
-        |--------------------------------------------------------------------------
-        */
 
         if (!$elder) {
             return redirect()
@@ -33,72 +22,33 @@ class DashboardController extends Controller
                 ->with('info', 'Please complete the elder profile first.');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Latest care visit
-        |--------------------------------------------------------------------------
-        */
-
+        // Get the latest visit and the caregiver who submitted it.
         $latestVisit = DB::table('care_visits')
-            ->leftJoin(
-                'users',
-                'care_visits.caregiver_id',
-                '=',
-                'users.id'
-            )
+            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
             ->where('care_visits.elder_id', $elder->id)
-            ->select(
-                'care_visits.*',
-                'users.name as caregiver_name'
-            )
+            ->select('care_visits.*', 'users.name as caregiver_name')
             ->orderByDesc('care_visits.visit_date')
             ->first();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Recent care visits
-        |--------------------------------------------------------------------------
-        */
-
+        // Show the five most recent visits.
         $recentVisits = DB::table('care_visits')
-            ->leftJoin(
-                'users',
-                'care_visits.caregiver_id',
-                '=',
-                'users.id'
-            )
+            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
             ->where('care_visits.elder_id', $elder->id)
-            ->select(
-                'care_visits.*',
-                'users.name as caregiver_name'
-            )
+            ->select('care_visits.*', 'users.name as caregiver_name')
             ->orderByDesc('care_visits.visit_date')
             ->limit(5)
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Health trend data
-        |--------------------------------------------------------------------------
-        */
-
+        // Get the latest ten visits for the health chart, then display them oldest first.
         $healthTrends = DB::table('care_visits')
             ->where('elder_id', $elder->id)
-            ->orderBy('visit_date')
+            ->orderByDesc('visit_date')
             ->limit(10)
-            ->get([
-                'visit_date',
-                'mood_score',
-                'appetite_score',
-                'pain_level'
-            ]);
+            ->get(['visit_date', 'mood_score', 'appetite_score', 'pain_level'])
+            ->reverse()
+            ->values();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Active alerts
-        |--------------------------------------------------------------------------
-        */
-
+        // Only unread alerts for the signed-in family account are shown.
         $alerts = DB::table('alerts')
             ->where('family_user_id', $userId)
             ->where('is_read', false)
@@ -106,12 +56,7 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Medication adherence
-        |--------------------------------------------------------------------------
-        */
-
+        // Calculate adherence from visit records where medication status was recorded.
         $medicationTotal = DB::table('care_visits')
             ->where('elder_id', $elder->id)
             ->whereNotNull('medication_taken')
@@ -123,24 +68,13 @@ class DashboardController extends Controller
             ->count();
 
         $medicationAdherence = $medicationTotal > 0
-            ? round(($medicationTaken / $medicationTotal) * 100)
+            ? (int) round(($medicationTaken / $medicationTotal) * 100)
             : 0;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Latest health measurements
-        |--------------------------------------------------------------------------
-        */
-
+        // Keep the summary empty until a visit has a recorded score.
         $latestMood = $latestVisit?->mood_score ?? 0;
         $latestAppetite = $latestVisit?->appetite_score ?? 0;
         $latestPain = $latestVisit?->pain_level ?? 0;
-
-        /*
-        |--------------------------------------------------------------------------
-        | Send data to dashboard
-        |--------------------------------------------------------------------------
-        */
 
         return view('dashboard', compact(
             'elder',
