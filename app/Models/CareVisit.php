@@ -4,24 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CareVisit extends Model
 {
     protected $fillable = [
-        'elder_id',
-        'caregiver_id',
-        'visit_date',
-        'tasks_completed',
-        'mood_score',
-        'appetite_score',
-        'pain_level',
-        'medication_taken',
-        'visit_note',
+        'elder_id', 'caregiver_id', 'visit_date', 'tasks_completed',
+        'mood_score', 'appetite_score', 'pain_level', 'medication_taken', 'visit_note',
     ];
 
     protected $casts = [
-        'visit_date' => 'datetime',
+        'visit_date' => 'date',
+        'mood_score' => 'integer',
+        'appetite_score' => 'integer',
+        'pain_level' => 'integer',
         'medication_taken' => 'boolean',
     ];
 
@@ -33,10 +28,5 @@ class CareVisit extends Model
     public function caregiver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'caregiver_id');
-    }
-
-    public function alerts(): HasMany
-    {
-        return $this->hasMany(Alert::class, 'visit_id');
     }
 }
