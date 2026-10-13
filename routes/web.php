@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -6,6 +7,7 @@ use App\Http\Controllers\ElderProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\SentimentAnalysisController;
 
 /* Authentication */
 
@@ -61,4 +63,13 @@ Route::middleware('auth')->group(function () {
     // Mark an alert as read
     Route::patch('/alerts/{alert}/read', [AlertController::class, 'markAsRead'])
         ->name('alerts.read');
+
+    // Sentiment analysis dashboard
+    Route::get('/sentiment-analysis', [SentimentAnalysisController::class, 'index'])
+        ->name('sentiment.index');
+
+    // Export sentiment analysis results
+    Route::get('/sentiment-analysis/export', [SentimentAnalysisController::class, 'export'])
+        ->name('sentiment.export');
+
 });
