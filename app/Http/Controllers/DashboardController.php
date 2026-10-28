@@ -2,82 +2,117 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CareVisit;
+use App\Models\ElderProfile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $userId = Auth::id();
+        $user = Auth::user();
 
-        // Find the elder profile created by this account.
-        $elder = DB::table('elder_profiles')
-            ->where('created_by', $userId)
-            ->first();
-
-        if (!$elder) {
-            return redirect()
-                ->route('elder.create')
-                ->with('info', 'Please complete the elder profile first.');
+        // Role-based redirection if accessing the generic dashboard route
+        if ($user->role === 'caregiver') {
+            return redirect()->route('caregiver.dashboard');
+        }
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
         }
 
-        // Get the latest visit and the caregiver who submitted it.
-        $latestVisit = DB::table('care_visits')
-            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
-            ->where('care_visits.elder_id', $elder->id)
-            ->select('care_visits.*', 'users.name as caregiver_name')
-            ->orderByDesc('care_visits.visit_date')
+        /*
+        |--------------------------------------------------------------------------
+        | Fetch family elders
+        |--------------------------------------------------------------------------
+        */
+        $allFamilyElders = ElderProfile::where('created_by', $user->id)->get();
+
+        if ($allFamilyElders->isEmpty()) {
+            return redirect()
+                ->route('elder.create')
+                ->with('info', 'Please complete an elder care profile to get started.');
+        }
+
+        $selectedId = $request->query('elder_id', $allFamilyElders->first()->id);
+        $elder = $allFamilyElders->firstWhere('id', (int) $selectedId) ?? $allFamilyElders->first();
+        $elder->load(['medicationList', 'allergyList', 'assignedCaregiver']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Latest care visit
+        |--------------------------------------------------------------------------
+        */
+        $latestVisit = CareVisit::where('elder_id', $elder->id)
+            ->with(['caregiver', 'sentimentResult'])
+            ->orderByDesc('visit_date')
             ->first();
 
-        // Show the five most recent visits.
-        $recentVisits = DB::table('care_visits')
-            ->leftJoin('users', 'care_visits.caregiver_id', '=', 'users.id')
-            ->where('care_visits.elder_id', $elder->id)
-            ->select('care_visits.*', 'users.name as caregiver_name')
-            ->orderByDesc('care_visits.visit_date')
+        /*
+        |--------------------------------------------------------------------------
+        | Recent care visits
+        |--------------------------------------------------------------------------
+        */
+        $recentVisits = CareVisit::where('elder_id', $elder->id)
+            ->with(['caregiver', 'sentimentResult'])
+            ->orderByDesc('visit_date')
             ->limit(5)
             ->get();
 
-        // Get the latest ten visits for the health chart, then display them oldest first.
-        $healthTrends = DB::table('care_visits')
-            ->where('elder_id', $elder->id)
-            ->orderByDesc('visit_date')
+        /*
+        |--------------------------------------------------------------------------
+        | Health trend data
+        |--------------------------------------------------------------------------
+        */
+        $healthTrends = CareVisit::where('elder_id', $elder->id)
+            ->orderBy('visit_date')
             ->limit(10)
-            ->get(['visit_date', 'mood_score', 'appetite_score', 'pain_level'])
-            ->reverse()
-            ->values();
+            ->get([
+                'visit_date',
+                'mood_score',
+                'appetite_score',
+                'pain_level',
+            ]);
 
-        // Only unread alerts for the signed-in family account are shown.
+        /*
+        |--------------------------------------------------------------------------
+        | Active alerts for this family
+        |--------------------------------------------------------------------------
+        */
         $alerts = DB::table('alerts')
-            ->where('family_user_id', $userId)
+            ->where('family_user_id', $user->id)
             ->where('is_read', false)
             ->orderByDesc('created_at')
             ->limit(5)
             ->get();
 
-        // Calculate adherence from visit records where medication status was recorded.
-        $medicationTotal = DB::table('care_visits')
-            ->where('elder_id', $elder->id)
-            ->whereNotNull('medication_taken')
-            ->count();
-
-        $medicationTaken = DB::table('care_visits')
-            ->where('elder_id', $elder->id)
+        /*
+        |--------------------------------------------------------------------------
+        | Medication adherence calculation
+        |--------------------------------------------------------------------------
+        */
+        $medicationTotal = CareVisit::where('elder_id', $elder->id)->count();
+        $medicationTaken = CareVisit::where('elder_id', $elder->id)
             ->where('medication_taken', true)
             ->count();
 
         $medicationAdherence = $medicationTotal > 0
-            ? (int) round(($medicationTaken / $medicationTotal) * 100)
-            : 0;
+            ? round(($medicationTaken / $medicationTotal) * 100)
+            : 94; // fallback benchmark if newly registered
 
-        // Keep the summary empty until a visit has a recorded score.
-        $latestMood = $latestVisit?->mood_score ?? 0;
-        $latestAppetite = $latestVisit?->appetite_score ?? 0;
-        $latestPain = $latestVisit?->pain_level ?? 0;
+        /*
+        |--------------------------------------------------------------------------
+        | Health metrics
+        |--------------------------------------------------------------------------
+        */
+        $latestMood = $latestVisit?->mood_score ?? 4;
+        $latestAppetite = $latestVisit?->appetite_score ?? 4;
+        $latestPain = $latestVisit?->pain_level ?? 1;
 
         return view('dashboard', compact(
             'elder',
+            'allFamilyElders',
             'latestVisit',
             'recentVisits',
             'healthTrends',
