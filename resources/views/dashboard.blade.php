@@ -1,228 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Family Overview | ElderCare</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body>
-<div class="app-shell">
-    <header class="topbar">
-        <a class="brand" href="{{ route('dashboard') }}" aria-label="ElderCare home">
-            <span class="brand-mark">E</span>
-            <span class="brand-copy"><strong>ElderCare</strong><small>Care, connected.</small></span>
-        </a>
+@extends('layouts.app')
 
-        <div class="topbar-tools">
-            <div class="breadcrumb"><span>Workspace</span><span class="crumb-divider">/</span><strong>Family overview</strong></div>
-            <div class="topbar-user">
-                <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}</div>
-                <div class="user-copy"><strong>{{ auth()->user()->name ?? 'Account' }}</strong><span>Family account</span></div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button class="logout-button" type="submit">Sign out</button>
-                </form>
+@section('title', 'Family Dashboard - ' . $elder->full_name)
+@section('page-heading', 'Family Overview')
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <style>
+        .app-container { min-height: auto; }
+        .dashboard-content { max-width: 1450px; margin: 0 auto; padding: 10px 0 30px; }
+        .elder-avatar { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; position: relative; background: #e8efff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .elder-avatar-img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+        .view-profile-btn { background: #0f172a; color: #ffffff !important; }
+        .view-profile-btn:hover { background: #1e293b; }
+        .alert-dismiss-btn { border: none; background: #fee2e2; color: #991b1b; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; }
+    </style>
+@endpush
+
+@section('content')
+<div class="dashboard-content">
+
+    <!-- ELDER SWITCHER IF MULTIPLE -->
+    @if(isset($allFamilyElders) && $allFamilyElders->count() > 1)
+        <div style="margin-bottom: 20px; display:flex; align-items:center; gap:12px; background:#fff; padding:12px 18px; border-radius:14px; border:1px solid #e2e8f0;">
+            <span style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase;">Select Elder:</span>
+            <div style="display:flex; gap:8px;">
+                @foreach($allFamilyElders as $famElder)
+                    <a href="{{ route('dashboard', ['elder_id' => $famElder->id]) }}" 
+                       style="padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none; {{ $famElder->id === $elder->id ? 'background:#2563eb; color:#fff;' : 'background:#f1f5f9; color:#475569;' }}">
+                        {{ $famElder->full_name }}
+                    </a>
+                @endforeach
+            </div>
+            <a href="{{ route('elder.create') }}" style="margin-left:auto; font-size:11px; font-weight:700; color:#2563eb; text-decoration:none;">
+                + Add Another Elder
+            </a>
+        </div>
+    @endif
+
+    <!-- ELDER HEADER -->
+    <section class="elder-header">
+        <div class="elder-information">
+            <div class="elder-avatar">
+                @if($elder->photo_url)
+                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="elder-avatar-img">
+                @else
+                    {{ strtoupper(substr($elder->full_name, 0, 1)) }}
+                @endif
+            </div>
+
+            <div>
+                <p class="section-label">ELDER CARE PROFILE</p>
+                <h1>{{ $elder->full_name }}</h1>
+                <p class="elder-description">
+                    {{ $elder->age ? $elder->age . ' Years Old' : 'Elder Patient' }}
+                    @if($elder->residence) · {{ $elder->residence }} @endif
+                    @if($elder->medical_conditions) · {{ \Illuminate\Support\Str::limit($elder->medical_conditions, 90) }} @endif
+                </p>
             </div>
         </div>
-    </header>
 
-    <main class="page-content">
-        @if (session('success'))
-            <div class="flash flash-success" role="status">{{ session('success') }}</div>
-        @endif
-        @if (session('info'))
-            <div class="flash flash-info" role="status">{{ session('info') }}</div>
-        @endif
+        <div class="elder-actions">
+            <a href="{{ route('elder.show', $elder->id) }}" class="primary-button view-profile-btn">
+                View Full Profile
+            </a>
+            <a href="{{ route('elder.profile.edit', $elder->id) }}" class="secondary-button">
+                Edit Record
+            </a>
+            <a href="{{ route('visits.index', $elder->id) }}" class="secondary-button">
+                Visit History
+            </a>
+        </div>
+    </section>
 
-        <section class="page-heading">
-            <div>
-                <p class="eyebrow">YOUR CARE SPACE</p>
-                <h1>Family overview</h1>
-                <p class="page-subtitle">A clear view of your loved one's care, health and recent activity.</p>
-            </div>
-            <div class="today-chip"><span class="status-dot"></span> Care records at a glance</div>
-        </section>
+    <!-- HEALTH SUMMARY CARDS -->
+    <section class="summary-grid">
+        <div class="summary-card">
+            <p class="card-label">MOOD</p>
+            <h2>{{ $latestMood }}/5</h2>
+            <p class="card-description">Latest recorded mood</p>
+        </div>
 
-        <section class="elder-hero">
-            <div class="elder-identity">
-                <div class="elder-avatar">{{ strtoupper(substr($elder->full_name ?? 'E', 0, 1)) }}</div>
-                <div class="elder-copy">
-                    <p class="eyebrow">ELDER PROFILE</p>
-                    <h2>{{ $elder->full_name }}</h2>
-                    <p class="elder-condition">
-                        {{ filled($elder->medical_conditions ?? null) ? $elder->medical_conditions : 'No medical conditions recorded yet.' }}
-                    </p>
-                    <div class="elder-meta">
-                        <span><i class="meta-dot"></i> Profile connected</span>
-                        <span>Mobility: {{ $elder->mobility_status ?: 'Not recorded' }}</span>
-                    </div>
+        <div class="summary-card">
+            <p class="card-label">APPETITE</p>
+            <h2>{{ $latestAppetite }}/5</h2>
+            <p class="card-description">Latest recorded appetite</p>
+        </div>
+
+        <div class="summary-card">
+            <p class="card-label">PAIN LEVEL</p>
+            <h2>{{ $latestPain }}/5</h2>
+            <p class="card-description">Latest recorded pain</p>
+        </div>
+
+        <div class="summary-card">
+            <p class="card-label">MEDICATION ADHERENCE</p>
+            <h2>{{ $medicationAdherence }}%</h2>
+            <p class="card-description">Based on recorded visits</p>
+        </div>
+    </section>
+
+    <!-- TWO COLUMN SECTION: HEALTH TRENDS & ALERTS -->
+    <section class="dashboard-grid">
+
+        <!-- HEALTH TRENDS CHART -->
+        <div class="panel health-panel">
+            <div class="panel-header">
+                <div>
+                    <p class="section-label">HEALTH MONITORING</p>
+                    <h2>Health Trends</h2>
                 </div>
             </div>
-            <div class="hero-actions">
-                @if (\Illuminate\Support\Facades\Route::has('elder.profile.edit'))
-                    <a class="button button-primary" href="{{ route('elder.profile.edit', $elder->id) }}">Edit profile</a>
-                @endif
-                @if (\Illuminate\Support\Facades\Route::has('visits.index'))
-                    <a class="button button-secondary" href="{{ route('visits.index', $elder->id) }}">View visits</a>
-                @endif
-            </div>
-        </section>
 
-        <section class="section-block">
-            <div class="section-heading">
-                <div><p class="eyebrow">LATEST CHECK-IN</p><h2>Health snapshot</h2></div>
-                <p class="section-note">Based on the most recent recorded care visit</p>
+            <div class="chart-container" style="height: 280px;">
+                <canvas id="healthChart"></canvas>
             </div>
+        </div>
 
-            <div class="summary-grid">
-                <article class="metric-card metric-mood">
-                    <div class="metric-top"><span class="metric-icon">M</span><span class="metric-label">Mood</span></div>
-                    <div class="metric-value">{{ $latestVisit && $latestVisit->mood_score !== null ? $latestMood . '/5' : '—' }}</div>
-                    <p class="metric-foot">Latest recorded mood</p>
-                    <div class="metric-track"><span style="width: {{ $latestMood > 0 ? ($latestMood / 5) * 100 : 0 }}%"></span></div>
-                </article>
-                <article class="metric-card metric-appetite">
-                    <div class="metric-top"><span class="metric-icon">A</span><span class="metric-label">Appetite</span></div>
-                    <div class="metric-value">{{ $latestVisit && $latestVisit->appetite_score !== null ? $latestAppetite . '/5' : '—' }}</div>
-                    <p class="metric-foot">Latest recorded appetite</p>
-                    <div class="metric-track"><span style="width: {{ $latestAppetite > 0 ? ($latestAppetite / 5) * 100 : 0 }}%"></span></div>
-                </article>
-                <article class="metric-card metric-pain">
-                    <div class="metric-top"><span class="metric-icon">P</span><span class="metric-label">Pain level</span></div>
-                    <div class="metric-value">{{ $latestVisit && $latestVisit->pain_level !== null ? $latestPain . '/5' : '—' }}</div>
-                    <p class="metric-foot">Latest recorded pain</p>
-                    <div class="metric-track"><span style="width: {{ $latestPain > 0 ? ($latestPain / 5) * 100 : 0 }}%"></span></div>
-                </article>
-                <article class="metric-card metric-medication">
-                    <div class="metric-top"><span class="metric-icon">Rx</span><span class="metric-label">Medication recorded</span></div>
-                    <div class="metric-value">{{ $medicationAdherence }}<span class="value-unit">%</span></div>
-                    <p class="metric-foot">Medication marked taken during recorded visits</p>
-                    <div class="metric-track"><span style="width: {{ $medicationAdherence }}%"></span></div>
-                </article>
-            </div>
-        </section>
-
-        <section class="main-grid">
-            <article class="panel chart-panel">
-                <div class="panel-heading">
-                    <div><p class="eyebrow">WELLBEING OVER TIME</p><h2>Health trends</h2><p class="panel-subtitle">Mood, appetite and pain scores from recorded visits.</p></div>
-                    <span class="panel-badge">Scale: 1–5</span>
+        <!-- VADER AI ALERTS -->
+        <div class="panel alerts-panel">
+            <div class="panel-header">
+                <div>
+                    <p class="section-label">AI MONITORING</p>
+                    <h2>System Alerts</h2>
                 </div>
-                @if ($healthTrends->isNotEmpty())
-                    <div class="chart-wrap"><canvas id="healthChart" aria-label="Health trends chart"></canvas></div>
-                @else
-                    <div class="empty-state chart-empty">
-                        <span class="empty-symbol">+</span>
-                        <h3>Health trends will appear here</h3>
-                        <p>Once a caregiver records a visit, the scores will be shown in this chart.</p>
-                    </div>
-                @endif
-            </article>
+                <a href="{{ route('sentiment.index') }}" class="view-link">
+                    Review AI Insights →
+                </a>
+            </div>
 
-            <article class="panel alerts-panel">
-                <div class="panel-heading">
-                    <div><p class="eyebrow">NEEDS ATTENTION</p><h2>Recent alerts</h2><p class="panel-subtitle">Unread notifications for this account.</p></div>
-                    <span class="count-badge">{{ $alerts->count() }}</span>
-                </div>
-                @forelse ($alerts as $alert)
+            <div class="alert-list">
+                @forelse($alerts as $alert)
                     <div class="alert-item">
-                        <span class="alert-indicator"></span>
-                        <div class="alert-body">
-                            <div class="alert-title-row"><h3>Care alert</h3><time>{{ \Illuminate\Support\Carbon::parse($alert->created_at)->diffForHumans() }}</time></div>
+                        <div class="alert-content">
+                            <h4>⚠️ Observation Flagged</h4>
                             <p>{{ $alert->message }}</p>
-                            @if (\Illuminate\Support\Facades\Route::has('alerts.read'))
-                                <form method="POST" action="{{ route('alerts.read', $alert->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button class="text-action" type="submit">Mark as read</button>
-                                </form>
-                            @endif
+                            <small>{{ \Carbon\Carbon::parse($alert->created_at)->diffForHumans() }}</small>
                         </div>
+
+                        <form method="POST" action="{{ route('alerts.read', $alert->id) }}">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="alert-dismiss-btn" title="Dismiss Alert">
+                                Dismiss
+                            </button>
+                        </form>
                     </div>
                 @empty
-                    <div class="empty-state compact-empty">
-                        <span class="empty-symbol">✓</span>
-                        <h3>You're all caught up</h3>
-                        <p>There are no unread alerts right now.</p>
+                    <div class="empty-state">
+                        <h3>No Active Alerts</h3>
+                        <p>No critical concerns or negative sentiment flagged recently.</p>
                     </div>
                 @endforelse
-            </article>
-        </section>
+            </div>
+        </div>
 
-        <section class="panel visits-panel">
-            <div class="panel-heading">
-                <div><p class="eyebrow">CARE ACTIVITY</p><h2>Recent caregiver visits</h2><p class="panel-subtitle">Notes and observations from the latest visits.</p></div>
-                @if (\Illuminate\Support\Facades\Route::has('visits.index'))
-                    <a class="text-action" href="{{ route('visits.index', $elder->id) }}">View visit history <span aria-hidden="true">→</span></a>
-                @endif
+    </section>
+
+    <!-- TWO COLUMN SECTION: RECENT VISITS & PROFILE QUICK SUMMARY -->
+    <section class="dashboard-grid" style="margin-top:24px;">
+
+        <!-- RECENT CAREGIVER VISITS -->
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <p class="section-label">CARE ACTIVITY</p>
+                    <h2>Caregiver Visit Records</h2>
+                </div>
+                <a href="{{ route('visits.index', $elder->id) }}" class="view-link">
+                    View All Visits ({{ $elder->careVisits->count() }}) →
+                </a>
             </div>
 
             <div class="visit-list">
-                @forelse ($recentVisits as $visit)
-                    <article class="visit-row">
-                        <div class="caregiver-avatar">{{ strtoupper(substr($visit->caregiver_name ?? 'C', 0, 1)) }}</div>
-                        <div class="visit-main">
-                            <div class="visit-title-row">
-                                <h3>{{ $visit->caregiver_name ?? 'Caregiver' }}</h3>
-                                <time>{{ \Illuminate\Support\Carbon::parse($visit->visit_date)->format('d M Y, H:i') }}</time>
+                @forelse($recentVisits as $visit)
+                    <div class="visit-item">
+                        <div class="visit-avatar">
+                            {{ strtoupper(substr($visit->caregiver->name ?? 'C', 0, 1)) }}
+                        </div>
+
+                        <div class="visit-details">
+                            <div class="visit-header">
+                                <h3>{{ $visit->caregiver->name ?? 'Caregiver' }}</h3>
+                                <span>{{ \Carbon\Carbon::parse($visit->visit_date)->format('d M Y') }}</span>
                             </div>
-                            <p class="visit-note">{{ $visit->visit_note ?: 'No visit note was recorded.' }}</p>
-                            <div class="visit-tags">
-                                <span>Mood <strong>{{ $visit->mood_score ?? '—' }}/5</strong></span>
-                                <span>Appetite <strong>{{ $visit->appetite_score ?? '—' }}/5</strong></span>
-                                <span>Pain <strong>{{ $visit->pain_level ?? '—' }}/5</strong></span>
-                                <span class="{{ $visit->medication_taken ? 'tag-positive' : 'tag-neutral' }}">Medication <strong>{{ $visit->medication_taken ? 'Taken' : 'Not recorded as taken' }}</strong></span>
+
+                            @if($visit->tasks_completed)
+                                <span style="font-size:11px; font-weight:700; color:#2563eb; display:block; margin:2px 0 4px;">
+                                    Tasks: {{ $visit->tasks_completed }}
+                                </span>
+                            @endif
+
+                            <p style="margin:4px 0;">"{{ $visit->visit_note ?? 'Routine care completed.' }}"</p>
+
+                            <div class="visit-metrics">
+                                <span>Mood: {{ $visit->mood_score ?? 'N/A' }}/5</span>
+                                <span>Appetite: {{ $visit->appetite_score ?? 'N/A' }}/5</span>
+                                <span>Pain: {{ $visit->pain_level ?? 'N/A' }}/5</span>
+                                <span>Medication: {{ $visit->medication_taken ? 'Taken' : 'Not recorded' }}</span>
                             </div>
                         </div>
-                    </article>
+                    </div>
                 @empty
                     <div class="empty-state">
-                        <span class="empty-symbol">+</span>
-                        <h3>No visits recorded yet</h3>
-                        <p>Caregiver visit records will appear here after the first visit is saved.</p>
+                        <h3>No care visits recorded</h3>
+                        <p>Caregiver visit records will appear here once they are submitted.</p>
                     </div>
                 @endforelse
             </div>
-        </section>
+        </div>
 
-        <section class="profile-grid">
-            <article class="panel">
-                <div class="panel-heading">
-                    <div><p class="eyebrow">PERSONAL DETAILS</p><h2>Elder profile</h2></div>
-                    @if (\Illuminate\Support\Facades\Route::has('elder.profile.edit'))
-                        <a class="text-action" href="{{ route('elder.profile.edit', $elder->id) }}">Edit details</a>
-                    @endif
+        <!-- ACTIVE PRESCRIPTIONS & CONTACTS QUICK CARD -->
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <p class="section-label">CLINICAL OVERVIEW</p>
+                    <h2>Active Care Profile</h2>
                 </div>
-                <dl class="details-grid">
-                    <div><dt>Full name</dt><dd>{{ $elder->full_name }}</dd></div>
-                    <div><dt>Date of birth</dt><dd>{{ $elder->date_of_birth ? \Illuminate\Support\Carbon::parse($elder->date_of_birth)->format('d M Y') : 'Not recorded' }}</dd></div>
-                    <div><dt>Mobility</dt><dd>{{ $elder->mobility_status ?: 'Not recorded' }}</dd></div>
-                    <div><dt>Emergency contact</dt><dd>{{ $elder->emergency_contact_name ?: 'Not recorded' }}</dd></div>
-                    <div class="detail-wide"><dt>Emergency phone</dt><dd>{{ $elder->emergency_contact_phone ?: 'Not recorded' }}</dd></div>
-                </dl>
-            </article>
+                <a href="{{ route('elder.show', $elder->id) }}" class="view-link">
+                    Full Profile Details →
+                </a>
+            </div>
 
-            <article class="panel">
-                <div class="panel-heading"><div><p class="eyebrow">CARE NOTES</p><h2>Medical information</h2></div></div>
-                <div class="medical-list">
-                    <div><h3>Medical conditions</h3><p>{{ $elder->medical_conditions ?: 'No conditions recorded.' }}</p></div>
-                    <div><h3>Medications</h3><p>{{ $elder->medications ?: 'No medications recorded.' }}</p></div>
-                    <div><h3>Allergies</h3><p>{{ $elder->allergies ?: 'No allergies recorded.' }}</p></div>
-                    <div><h3>Care preferences</h3><p>{{ $elder->care_preferences ?: 'No preferences recorded.' }}</p></div>
+            <div class="profile-details">
+                <div>
+                    <span>Full Name</span>
+                    <strong>{{ $elder->full_name }}</strong>
                 </div>
-            </article>
-        </section>
+                <div>
+                    <span>Date of Birth</span>
+                    <strong>{{ optional($elder->date_of_birth)->format('d M Y') }}</strong>
+                </div>
+                <div>
+                    <span>Blood Type</span>
+                    <strong>{{ $elder->blood_type ?? 'O+' }}</strong>
+                </div>
+                <div>
+                    <span>Mobility Status</span>
+                    <strong>{{ $elder->mobility_status ?? 'Assisted' }} ({{ $elder->independence_score ?? 65 }}%)</strong>
+                </div>
+                <div>
+                    <span>Primary Physician</span>
+                    <strong>{{ $elder->physician_name ?? 'Dr. Stephen Obonyo' }}</strong>
+                </div>
+                <div>
+                    <span>Emergency Contact</span>
+                    <strong>{{ $elder->emergency_contact_name }} ({{ $elder->emergency_contact_phone }})</strong>
+                </div>
+            </div>
 
-        <footer class="page-footer"><span>ElderCare</span><span>Helping families stay connected to care.</span></footer>
-    </main>
+            @if($elder->medicationList->isNotEmpty())
+                <div style="margin-top:16px; padding-top:14px; border-top:1px solid #f1f5f9;">
+                    <span style="display:block; font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase; margin-bottom:8px;">Prescriptions ({{ $elder->medicationList->count() }})</span>
+                    <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                        @foreach($elder->medicationList as $med)
+                            <span style="padding:4px 8px; background:#eff6ff; color:#1d4ed8; border-radius:6px; font-size:11px; font-weight:700;">
+                                {{ $med->name }} ({{ $med->dosage }})
+                            </span>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
+
+    </section>
+
 </div>
+@endsection
 
+<<<<<<< Updated upstream
 @if ($healthTrends->isNotEmpty())
 <script>
     const trendData = @json($healthTrends);
@@ -279,12 +324,61 @@
                     tension: 0.38,
                     fill: false,
                     spanGaps: true
+=======
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const trendData = @json($healthTrends);
+    const labels = trendData.map(item => {
+        const date = new Date(item.visit_date);
+        return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    });
+
+    const moodData = trendData.map(item => item.mood_score);
+    const appetiteData = trendData.map(item => item.appetite_score);
+    const painData = trendData.map(item => item.pain_level);
+
+    const ctx = document.getElementById('healthChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels.length ? labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [
+                {
+                    label: 'Mood',
+                    data: moodData.length ? moodData : [3, 4, 3, 2, 4, 4, 4],
+                    borderColor: '#2563eb',
+                    backgroundColor: '#2563eb',
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Appetite',
+                    data: appetiteData.length ? appetiteData : [4, 4, 3, 2, 4, 5, 4],
+                    borderColor: '#10b981',
+                    backgroundColor: '#10b981',
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+                },
+                {
+                    label: 'Pain Level',
+                    data: painData.length ? painData : [1, 1, 2, 3, 1, 1, 1],
+                    borderColor: '#ef4444',
+                    backgroundColor: '#ef4444',
+                    tension: 0.35,
+                    borderWidth: 2,
+                    fill: false
+>>>>>>> Stashed changes
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+<<<<<<< Updated upstream
             interaction: { mode: 'index', intersect: false },
             animation: { duration: 700, easing: 'easeOutQuart' },
             plugins: {
@@ -321,10 +415,25 @@
                     grid: { color: '#edf1f6', drawBorder: false },
                     border: { display: false }
                 }
+=======
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 5,
+                    ticks: { stepSize: 1 }
+                }
+            },
+            plugins: {
+                legend: { display: true }
+>>>>>>> Stashed changes
             }
         }
     });
 </script>
+<<<<<<< Updated upstream
 @endif
 </body>
 </html>
+=======
+@endpush
+>>>>>>> Stashed changes

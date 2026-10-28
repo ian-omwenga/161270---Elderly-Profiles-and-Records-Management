@@ -1,0 +1,405 @@
+/* Caregiver Visit Entry & Elder Profile Styles */
+.ve-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px clamp(16px, 2.5vw, 36px) 40px;
+    color: #1a2538;
+}
+
+.ve-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #eef2f7;
+}
+
+.ve-header-title h1 {
+    font: 800 clamp(22px, 2.5vw, 30px)/1.2 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ve-header-title p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.ve-chips {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ve-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.ve-chip-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #e0f2fe;
+    color: #0369a1;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.ve-chip-info small {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.ve-chip-info strong {
+    font-size: 12px;
+    color: #1e293b;
+}
+
+/* Two-column layout */
+.ve-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(320px, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+.ve-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+    margin-bottom: 24px;
+}
+
+.ve-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font: 700 15px 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+
+.ve-section-desc {
+    margin: 0 0 18px;
+    color: #64748b;
+    font-size: 11px;
+}
+
+/* Form inputs */
+.ve-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.ve-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ve-field label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #475569;
+    text-transform: uppercase;
+}
+
+.ve-field input, .ve-field select, .ve-field textarea {
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #f8fafc;
+    font-size: 13px;
+    color: #0f172a;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.ve-field input:focus, .ve-field select:focus, .ve-field textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.ve-field textarea {
+    min-height: 90px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+/* Care Activity Cards Grid */
+.ve-tasks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.ve-task-item {
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.ve-task-item input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ve-task-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px 10px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    gap: 8px;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ve-task-box svg {
+    width: 24px;
+    height: 24px;
+    color: #64748b;
+    transition: color 0.2s ease;
+}
+
+.ve-task-box span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #334155;
+    line-height: 1.25;
+}
+
+.ve-task-item:hover .ve-task-box {
+    border-color: #93c5fd;
+    background: #f0f7ff;
+    transform: translateY(-2px);
+}
+
+.ve-task-item input[type="checkbox"]:checked + .ve-task-box {
+    border-color: #2563eb;
+    background: #eff6ff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+.ve-task-item input[type="checkbox"]:checked + .ve-task-box svg {
+    color: #2563eb;
+}
+
+.ve-task-item input[type="checkbox"]:checked + .ve-task-box span {
+    color: #1d4ed8;
+}
+
+/* Right Sidebar Metrics */
+.ve-ai-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #0f172a;
+    color: #f8fafc;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.ve-mood-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin: 14px 0 20px;
+}
+
+.ve-mood-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 4px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ve-mood-btn input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ve-mood-icon {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.ve-mood-btn span {
+    font-size: 10px;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.ve-mood-btn:hover {
+    background: #f1f5f9;
+}
+
+.ve-mood-btn:has(input:checked) {
+    border-color: #2563eb;
+    background: #eff6ff;
+    color: #1d4ed8;
+    transform: scale(1.04);
+}
+
+.ve-mood-btn:has(input:checked) span {
+    color: #1d4ed8;
+}
+
+/* Urgent Concern Box */
+.ve-urgent-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: #fff1f2;
+    border: 1px solid #fecdd3;
+    border-radius: 14px;
+    margin: 20px 0;
+}
+
+.ve-urgent-box input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #e11d48;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.ve-urgent-box strong {
+    display: block;
+    font-size: 12px;
+    color: #9f1239;
+    margin-bottom: 3px;
+}
+
+.ve-urgent-box p {
+    margin: 0;
+    font-size: 11px;
+    color: #be123c;
+    line-height: 1.4;
+}
+
+/* Action Buttons */
+.ve-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ve-submit-btn {
+    width: 100%;
+    padding: 14px 20px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font: 700 13px 'Manrope', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.ve-submit-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.32);
+}
+
+.ve-cancel-btn {
+    width: 100%;
+    padding: 12px 20px;
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font: 700 12px 'Manrope', sans-serif;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.ve-cancel-btn:hover {
+    background: #e2e8f0;
+}
+
+/* Previous Visit Info */
+.ve-prev-card {
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-top: 18px;
+}
+
+.ve-prev-card small {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.ve-prev-card p {
+    margin: 0;
+    font-size: 12px;
+    color: #334155;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+@media (max-width: 950px) {
+    .ve-grid {
+        grid-template-columns: 1fr;
+    }
+}

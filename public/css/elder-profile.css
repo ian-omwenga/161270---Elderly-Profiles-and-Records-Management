@@ -1,0 +1,541 @@
+/* Elder Profile Dedicated Showcase Styles (Figure 4.9) */
+.ep-container {
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 24px clamp(16px, 2.5vw, 36px) 40px;
+    color: #1a2538;
+}
+
+.ep-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+.ep-breadcrumb a {
+    color: #475569;
+    text-decoration: none;
+}
+
+.ep-breadcrumb span {
+    color: #cbd5e1;
+}
+
+.ep-grid {
+    display: grid;
+    grid-template-columns: minmax(310px, 380px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+
+/* Left Profile Card */
+.ep-sidebar-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+.ep-photo-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.ep-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ep-photo-fallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bfdbfe 100%);
+    color: #1e40af;
+    font: 800 64px 'Manrope', sans-serif;
+}
+
+.ep-status-pill {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ep-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+}
+
+.ep-profile-details {
+    padding: 24px;
+}
+
+.ep-profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.ep-name {
+    font: 800 24px 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+
+.ep-meta-line {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.ep-edit-icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ep-edit-icon-btn:hover {
+    background: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+}
+
+/* Demographics 2x2 Grid */
+.ep-demographics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 14px;
+    margin-bottom: 22px;
+    border: 1px solid #f1f5f9;
+}
+
+.ep-demo-item small {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 3px;
+}
+
+.ep-demo-item strong {
+    font-size: 13px;
+    color: #1e293b;
+}
+
+/* Mobility & Independence Bar */
+.ep-mobility-section {
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.ep-mobility-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.ep-mobility-header span {
+    font-size: 11px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ep-mobility-badge {
+    padding: 3px 10px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 6px;
+}
+
+.ep-scale-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.ep-scale-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 9999px;
+    transition: width 0.6s ease;
+}
+
+.ep-scale-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #94a3b8;
+    font-weight: 700;
+}
+
+/* Right Content Area */
+.ep-tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 24px;
+}
+
+.ep-tab-btn {
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    font: 700 13px 'Manrope', sans-serif;
+    color: #64748b;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ep-tab-btn.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+}
+
+/* Section Cards */
+.ep-section-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+}
+
+.ep-section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.ep-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 800 16px 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0;
+}
+
+.ep-action-link {
+    font-size: 12px;
+    color: #2563eb;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+/* Medications List */
+.ep-med-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.ep-med-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    transition: all 0.2s ease;
+}
+
+.ep-med-card:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.ep-med-name {
+    font: 800 15px 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0 0 3px;
+}
+
+.ep-med-dosage {
+    font-size: 12px;
+    color: #64748b;
+    margin: 0;
+}
+
+.ep-med-pill {
+    padding: 4px 10px;
+    background: #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 9999px;
+}
+
+/* Critical Allergies */
+.ep-allergy-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.ep-allergy-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    border-left: 4px solid #94a3b8;
+}
+
+.ep-allergy-card.severity-High {
+    border-left-color: #ef4444;
+    background: #fffbfa;
+}
+
+.ep-allergy-card.severity-Medium {
+    border-left-color: #f59e0b;
+    background: #fffdfa;
+}
+
+.ep-allergy-card.severity-Low {
+    border-left-color: #3b82f6;
+}
+
+.ep-allergy-name {
+    font: 800 14px 'Manrope', sans-serif;
+    color: #0f172a;
+    margin: 0 0 3px;
+}
+
+.ep-allergy-reaction {
+    font-size: 11px;
+    color: #64748b;
+    margin: 0;
+}
+
+.ep-badge-high {
+    padding: 3px 8px;
+    background: #fee2e2;
+    color: #991b1b;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.ep-badge-medium {
+    padding: 3px 8px;
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.ep-badge-low {
+    padding: 3px 8px;
+    background: #e0f2fe;
+    color: #0369a1;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+/* Emergency Contacts */
+.ep-contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.ep-contact-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+}
+
+.ep-contact-card.primary-contact {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+}
+
+.ep-contact-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ep-contact-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    color: #334155;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+.ep-contact-card.primary-contact .ep-contact-avatar {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.ep-contact-meta small {
+    display: block;
+    font-size: 10px;
+    font-weight: 800;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ep-contact-meta strong {
+    font-size: 13px;
+    color: #0f172a;
+}
+
+.ep-contact-meta p {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.ep-call-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #2563eb;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.ep-call-btn:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+/* Bottom Bar */
+.ep-footer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    margin-top: 24px;
+}
+
+.ep-footer-bar span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.ep-footer-btns {
+    display: flex;
+    gap: 12px;
+}
+
+.ep-btn-secondary {
+    padding: 10px 18px;
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font: 700 12px 'Manrope', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.ep-btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.ep-btn-primary {
+    padding: 10px 20px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font: 700 12px 'Manrope', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    transition: background 0.2s ease;
+}
+
+.ep-btn-primary:hover {
+    background: #1d4ed8;
+}
+
+@media (max-width: 950px) {
+    .ep-grid {
+        grid-template-columns: 1fr;
+    }
+}
