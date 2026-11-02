@@ -35,11 +35,14 @@
             <div class="form-group">
                 <label>Account Role</label>
                 <select name="role" required style="width:100%; padding:10px 14px; border:1px solid #cbd5e1; border-radius:10px; background:#f8fafc; font-size:13px;">
-                    <option value="family" {{ old('role') === 'family' ? 'selected' : '' }}>
-                        Family Member (Managing elder profiles & alerts)
+                    <option value="family" {{ old('role', 'family') === 'family' ? 'selected' : '' }}>
+                        Family Member (Manage elder profiles & view alerts)
                     </option>
                     <option value="caregiver" {{ old('role') === 'caregiver' ? 'selected' : '' }}>
-                        Professional Caregiver (Logging visits & observations)
+                        Professional Caregiver (Record visits & observations)
+                    </option>
+                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>
+                        Administrator (Platform management & system logs)
                     </option>
                 </select>
             </div>

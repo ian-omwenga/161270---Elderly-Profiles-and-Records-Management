@@ -12,15 +12,14 @@ class CaregiverDashboardController extends Controller
     {
         $caregiver = Auth::user();
 
-        // Elders assigned specifically to this caregiver, or all active elders if not yet partitioned
-        $assignedElders = ElderProfile::where('assigned_caregiver_id', $caregiver->id)
-            ->with(['medicationList', 'allergyList'])
-            ->get();
+        // Elders assigned specifically to this caregiver ONLY
+        $query = ElderProfile::with(['medicationList', 'allergyList']);
 
-        if ($assignedElders->isEmpty()) {
-            // Provide all registered elders for easy demonstration/home-care selection
-            $assignedElders = ElderProfile::with(['medicationList', 'allergyList'])->get();
+        if (!$caregiver->isAdmin()) {
+            $query->where('assigned_caregiver_id', $caregiver->id);
         }
+
+        $assignedElders = $query->get();
 
         $myVisits = CareVisit::where('caregiver_id', $caregiver->id)
             ->with(['elder', 'sentimentResult'])

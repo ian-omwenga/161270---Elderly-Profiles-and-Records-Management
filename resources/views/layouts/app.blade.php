@@ -20,8 +20,11 @@
             'admin' => 'ADMIN CONSOLE',
             default => 'FAMILY CARE SPACE',
         };
-        $firstElder = \App\Models\ElderProfile::where('created_by', $currentUser->id ?? 0)->first() 
-            ?? \App\Models\ElderProfile::first();
+        $firstElder = match($userRole) {
+            'caregiver' => \App\Models\ElderProfile::where('assigned_caregiver_id', $currentUser->id ?? 0)->first(),
+            'admin' => \App\Models\ElderProfile::first(),
+            default => \App\Models\ElderProfile::where('created_by', $currentUser->id ?? 0)->first(),
+        };
     @endphp
 
     <div class="ec-shell">

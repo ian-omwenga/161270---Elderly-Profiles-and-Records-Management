@@ -130,7 +130,7 @@
             <div class="ep-row">
                 <div class="ep-field">
                     <label for="physician_name">Primary Physician</label>
-                    <input type="text" id="physician_name" name="physician_name" value="{{ old('physician_name', $elder->physician_name) }}" placeholder="e.g. Dr. Stephen Obonyo">
+                    <input type="text" id="physician_name" name="physician_name" value="{{ old('physician_name', $elder->physician_name) }}" placeholder="e.g. Dr. David Kimani">
                 </div>
                 <div class="ep-field">
                     <label for="physician_phone">Physician Phone</label>

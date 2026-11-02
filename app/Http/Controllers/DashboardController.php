@@ -99,16 +99,16 @@ class DashboardController extends Controller
 
         $medicationAdherence = $medicationTotal > 0
             ? round(($medicationTaken / $medicationTotal) * 100)
-            : 94; // fallback benchmark if newly registered
+            : null;
 
         /*
         |--------------------------------------------------------------------------
-        | Health metrics
+        | Health metrics (actual keyed-in values from caregiver visit)
         |--------------------------------------------------------------------------
         */
-        $latestMood = $latestVisit?->mood_score ?? 4;
-        $latestAppetite = $latestVisit?->appetite_score ?? 4;
-        $latestPain = $latestVisit?->pain_level ?? 1;
+        $latestMood = $latestVisit?->mood_score;
+        $latestAppetite = $latestVisit?->appetite_score;
+        $latestPain = $latestVisit?->pain_level;
 
         return view('dashboard', compact(
             'elder',

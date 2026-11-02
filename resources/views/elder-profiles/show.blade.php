@@ -24,7 +24,10 @@
         <div class="ep-sidebar-card">
             <div class="ep-photo-container">
                 @if($elder->photo_url)
-                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="ep-photo">
+                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="ep-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                    <div class="ep-photo-fallback" style="display:none;">
+                        {{ strtoupper(substr($elder->full_name, 0, 1)) }}
+                    </div>
                 @else
                     <div class="ep-photo-fallback">
                         {{ strtoupper(substr($elder->full_name, 0, 1)) }}
@@ -64,7 +67,7 @@
                     </div>
                     <div class="ep-demo-item">
                         <small>Physician</small>
-                        <strong>{{ $elder->physician_name ?? 'Dr. Obonyo' }}</strong>
+                        <strong>{{ $elder->physician_name ?? 'Dr. David Kimani' }}</strong>
                     </div>
                     <div class="ep-demo-item">
                         <small>Gender</small>
@@ -261,9 +264,15 @@
                         Update Care Record
                     </a>
 
-                    <a href="{{ route('visits.create', $elder->id) }}" class="ep-btn-primary">
-                        + Record Care Visit
-                    </a>
+                    @if(auth()->user()->role === 'caregiver' || auth()->user()->isAdmin())
+                        <a href="{{ route('visits.create', $elder->id) }}" class="ep-btn-primary">
+                            + Record Care Visit
+                        </a>
+                    @else
+                        <a href="{{ route('visits.index', $elder->id) }}" class="ep-btn-primary">
+                            View Visit Records
+                        </a>
+                    @endif
                 </div>
             </div>
 

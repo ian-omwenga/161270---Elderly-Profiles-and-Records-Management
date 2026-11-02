@@ -20,7 +20,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role' => ['required', 'in:family,caregiver'],
+            'role' => ['required', 'in:family,caregiver,admin'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
@@ -38,6 +38,10 @@ class AuthController extends Controller
             return redirect()->route('caregiver.dashboard')->with('status', 'Welcome to the Caregiver Portal.');
         }
 
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')->with('status', 'Welcome to the Administrator Console.');
+        }
+
         return redirect()->route('elder.create')->with('status', 'Welcome! Please set up your first elder profile.');
     }
 
@@ -51,20 +55,31 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'role' => ['nullable', 'in:family,caregiver,admin'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (Auth::user()->role === 'family') {
-                return redirect()->route('dashboard');
+            $user = Auth::user();
+            $selectedRole = $request->input('role');
+
+            // If a specific role was chosen and doesn't match the account role (unless user is an admin)
+            if ($selectedRole && $user->role !== $selectedRole && !$user->isAdmin()) {
+                $accountRole = $user->role;
+                Auth::logout();
+                return back()->withErrors([
+                    'role' => 'This account is registered as a ' . ucfirst($accountRole) . ', not ' . ucfirst($selectedRole) . '.',
+                ])->onlyInput('email');
             }
 
-            if (Auth::user()->role === 'caregiver') {
+            $effectiveRole = ($user->isAdmin() && $selectedRole) ? $selectedRole : $user->role;
+
+            if ($effectiveRole === 'caregiver') {
                 return redirect()->route('caregiver.dashboard');
             }
 
-            if (Auth::user()->role === 'admin') {
+            if ($effectiveRole === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 

@@ -24,6 +24,10 @@ class ElderProfileController extends Controller
             abort(403, 'Unauthorized access to elder profile.');
         }
 
+        if ($user->role === 'caregiver' && (int) $elder->assigned_caregiver_id !== (int) $user->id) {
+            abort(403, 'Unauthorized access. You are not assigned to this elder profile.');
+        }
+
         $elder->load([
             'creator',
             'assignedCaregiver',
@@ -40,8 +44,12 @@ class ElderProfileController extends Controller
      */
     public function photo(ElderProfile $elder)
     {
-        if ($elder->photo_path && Storage::disk('public')->exists($elder->photo_path)) {
-            return Storage::disk('public')->response($elder->photo_path);
+        if (!empty($elder->photo_path)) {
+            $path = str_replace('\\', '/', $elder->photo_path);
+            if (Storage::disk('public')->exists($path)) {
+                $fullPath = Storage::disk('public')->path($path);
+                return response()->file($fullPath);
+            }
         }
 
         abort(404);
