@@ -48,7 +48,23 @@ class ElderProfileController extends Controller
             $path = str_replace('\\', '/', $elder->photo_path);
             if (Storage::disk('public')->exists($path)) {
                 $fullPath = Storage::disk('public')->path($path);
-                return response()->file($fullPath);
+                
+                $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+                $mimeTypes = [
+                    'jpg'  => 'image/jpeg',
+                    'jpeg' => 'image/jpeg',
+                    'png'  => 'image/png',
+                    'gif'  => 'image/gif',
+                    'webp' => 'image/webp',
+                    'svg'  => 'image/svg+xml',
+                ];
+                $contentType = $mimeTypes[$extension] ?? (function_exists('mime_content_type') ? @mime_content_type($fullPath) : null) ?: 'image/jpeg';
+
+                return response()->file($fullPath, [
+                    'Content-Type' => $contentType,
+                    'Content-Disposition' => 'inline; filename="' . basename($fullPath) . '"',
+                    'Cache-Control' => 'public, max-age=86400',
+                ]);
             }
         }
 
@@ -120,7 +136,7 @@ class ElderProfileController extends Controller
             'physician_name' => $validated['physician_name'] ?? null,
             'physician_phone' => $validated['physician_phone'] ?? null,
             'mobility_status' => $validated['mobility_status'] ?? 'Independent',
-            'independence_score' => $validated['independence_score'] ?? 75,
+            'independence_score' => $validated['independence_score'] ?? null,
             'medical_conditions' => $validated['medical_conditions'] ?? null,
             'care_preferences' => $validated['care_preferences'] ?? null,
             'emergency_contact_name' => $validated['emergency_contact_name'],
@@ -169,9 +185,10 @@ class ElderProfileController extends Controller
      */
     public function edit(ElderProfile $elder)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        if ($user->role === 'family' && (int) $elder->created_by !== (int) $user->id) {
-            abort(403);
+        if ($user->role !== 'family' || (int) $elder->created_by !== (int) $user->id) {
+            abort(403, 'Only the family member who created this profile can edit it.');
         }
 
         $elder->load(['medicationList', 'allergyList']);
@@ -185,9 +202,10 @@ class ElderProfileController extends Controller
      */
     public function update(Request $request, ElderProfile $elder)
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
-        if ($user->role === 'family' && (int) $elder->created_by !== (int) $user->id) {
-            abort(403);
+        if ($user->role !== 'family' || (int) $elder->created_by !== (int) $user->id) {
+            abort(403, 'Only the family member who created this profile can update it.');
         }
 
         $validated = $request->validate([

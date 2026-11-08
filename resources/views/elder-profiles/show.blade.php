@@ -51,9 +51,11 @@
                         </p>
                     </div>
 
-                    <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-edit-icon-btn" title="Edit Elder Profile">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                    </a>
+                    @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                        <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-edit-icon-btn" title="Edit Elder Profile">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </a>
+                    @endif
                 </div>
 
                 <div class="ep-demographics">
@@ -79,13 +81,6 @@
                     <div class="ep-mobility-header">
                         <span>Mobility Status</span>
                         <span class="ep-mobility-badge">{{ $elder->mobility_status ?? 'Assisted' }}</span>
-                    </div>
-                    <div class="ep-scale-bar">
-                        <div class="ep-scale-fill" style="width: {{ $elder->independence_score ?? 65 }}%;"></div>
-                    </div>
-                    <div class="ep-scale-label">
-                        <span>Independence Scale</span>
-                        <span>{{ $elder->independence_score ?? 65 }}%</span>
                     </div>
                 </div>
 
@@ -119,7 +114,9 @@
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
                             Active Medications
                         </h2>
-                        <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-action-link">Manage Prescriptions →</a>
+                        @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                            <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-action-link">Manage Prescriptions →</a>
+                        @endif
                     </div>
 
                     @if($elder->medicationList->isNotEmpty())
@@ -152,7 +149,9 @@
                             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                             Critical Allergies & Sensitivities
                         </h2>
-                        <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-action-link">Update Allergies →</a>
+                        @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                            <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-action-link">Update Allergies →</a>
+                        @endif
                     </div>
 
                     @if($elder->allergyList->isNotEmpty())
@@ -260,9 +259,11 @@
                         Export Medical Summary
                     </button>
 
-                    <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-btn-secondary">
-                        Update Care Record
-                    </a>
+                    @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                        <a href="{{ route('elder.profile.edit', $elder->id) }}" class="ep-btn-secondary">
+                            Update Care Record
+                        </a>
+                    @endif
 
                     @if(auth()->user()->role === 'caregiver' || auth()->user()->isAdmin())
                         <a href="{{ route('visits.create', $elder->id) }}" class="ep-btn-primary">

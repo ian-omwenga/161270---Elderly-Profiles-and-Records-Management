@@ -85,7 +85,7 @@
 
             @if($elder->photo_url)
                 <div style="margin-bottom:14px; display:flex; align-items:center; gap:12px;">
-                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover;">
+                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover; border:1px solid #cbd5e1; box-shadow:0 2px 6px rgba(0,0,0,0.06);" onerror="this.style.display='none';">
                     <span style="font-size:12px; color:#64748b;">Current profile image active. Uploading a new file will replace it.</span>
                 </div>
             @endif
@@ -109,10 +109,6 @@
                         <option value="Limited Mobility" {{ old('mobility_status', $elder->mobility_status) === 'Limited Mobility' ? 'selected' : '' }}>Limited Mobility</option>
                         <option value="Bedridden" {{ old('mobility_status', $elder->mobility_status) === 'Bedridden' ? 'selected' : '' }}>Bedridden</option>
                     </select>
-                </div>
-                <div class="ep-field">
-                    <label for="independence_score">Independence Scale (%)</label>
-                    <input type="number" id="independence_score" name="independence_score" value="{{ old('independence_score', $elder->independence_score ?? 65) }}" min="0" max="100">
                 </div>
                 <div class="ep-field">
                     <label for="assigned_caregiver_id">Assigned Primary Caregiver</label>

@@ -108,10 +108,6 @@
                     </select>
                 </div>
                 <div class="ep-field">
-                    <label for="independence_score">Independence Scale (%)</label>
-                    <input type="number" id="independence_score" name="independence_score" value="{{ old('independence_score', 65) }}" min="0" max="100">
-                </div>
-                <div class="ep-field">
                     <label for="assigned_caregiver_id">Assigned Primary Caregiver</label>
                     <select id="assigned_caregiver_id" name="assigned_caregiver_id">
                         <option value="">-- Select Caregiver (Optional) --</option>
