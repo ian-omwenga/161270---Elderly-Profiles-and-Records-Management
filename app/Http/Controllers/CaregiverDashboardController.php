@@ -10,12 +10,13 @@ class CaregiverDashboardController extends Controller
 {
     public function index()
     {
+        /** @var \App\Models\User $caregiver */
         $caregiver = Auth::user();
 
         // Elders assigned specifically to this caregiver ONLY
         $query = ElderProfile::with(['medicationList', 'allergyList']);
 
-        if (!$caregiver->isAdmin()) {
+        if ($caregiver->role !== 'admin') {
             $query->where('assigned_caregiver_id', $caregiver->id);
         }
 
