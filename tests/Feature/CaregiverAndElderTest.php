@@ -137,4 +137,51 @@ class CaregiverAndElderTest extends TestCase
             $this->assertStringContainsString('image', $response->headers->get('Content-Type'));
         }
     }
+
+    public function test_caregiver_and_admin_cannot_edit_elder_profile(): void
+    {
+        $elder = ElderProfile::first();
+        $this->assertNotNull($elder);
+
+        $caregiver = User::where('role', 'caregiver')->first();
+        $admin = User::where('role', 'admin')->first();
+
+        // Caregiver blocked from edit & update
+        $this->actingAs($caregiver)->get(route('elder.profile.edit', $elder->id))->assertStatus(403);
+        $this->actingAs($caregiver)->put(route('elder.profile.update', $elder->id), ['full_name' => 'Attempted Hack'])->assertStatus(403);
+
+        // Admin blocked from edit & update
+        $this->actingAs($admin)->get(route('elder.profile.edit', $elder->id))->assertStatus(403);
+        $this->actingAs($admin)->put(route('elder.profile.update', $elder->id), ['full_name' => 'Attempted Hack'])->assertStatus(403);
+    }
+
+    public function test_login_authenticates_without_role_parameter_and_routes_to_correct_dashboard(): void
+    {
+        // Family login
+        $famUser = User::where('role', 'family')->first();
+        $famUser->update(['password' => \Illuminate\Support\Facades\Hash::make('password123')]);
+        $famResponse = $this->post(route('login.submit'), [
+            'email' => $famUser->email,
+            'password' => 'password123',
+        ]);
+        $famResponse->assertRedirect(route('dashboard'));
+
+        // Caregiver login
+        $cgUser = User::where('role', 'caregiver')->first();
+        $cgUser->update(['password' => \Illuminate\Support\Facades\Hash::make('password123')]);
+        $cgResponse = $this->post(route('login.submit'), [
+            'email' => $cgUser->email,
+            'password' => 'password123',
+        ]);
+        $cgResponse->assertRedirect(route('caregiver.dashboard'));
+
+        // Admin login
+        $adminUser = User::where('role', 'admin')->first();
+        $adminUser->update(['password' => \Illuminate\Support\Facades\Hash::make('password123')]);
+        $adminResponse = $this->post(route('login.submit'), [
+            'email' => $adminUser->email,
+            'password' => 'password123',
+        ]);
+        $adminResponse->assertRedirect(route('admin.dashboard'));
+    }
 }
