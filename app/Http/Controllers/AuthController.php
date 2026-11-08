@@ -55,31 +55,19 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'role' => ['nullable', 'in:family,caregiver,admin'],
         ]);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
+            /** @var \App\Models\User $user */
             $user = Auth::user();
-            $selectedRole = $request->input('role');
 
-            // If a specific role was chosen and doesn't match the account role (unless user is an admin)
-            if ($selectedRole && $user->role !== $selectedRole && !$user->isAdmin()) {
-                $accountRole = $user->role;
-                Auth::logout();
-                return back()->withErrors([
-                    'role' => 'This account is registered as a ' . ucfirst($accountRole) . ', not ' . ucfirst($selectedRole) . '.',
-                ])->onlyInput('email');
-            }
-
-            $effectiveRole = ($user->isAdmin() && $selectedRole) ? $selectedRole : $user->role;
-
-            if ($effectiveRole === 'caregiver') {
+            if ($user->role === 'caregiver') {
                 return redirect()->route('caregiver.dashboard');
             }
 
-            if ($effectiveRole === 'admin') {
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 

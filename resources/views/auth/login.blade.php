@@ -31,14 +31,6 @@
         <form method="POST" action="{{ route('login.submit') }}">
             @csrf
             <div class="form-group">
-                <label for="role">Sign in as</label>
-                <select id="role" name="role" required style="width:100%; padding:10px 14px; border:1px solid #cbd5e1; border-radius:10px; background:#f8fafc; font-size:13px; color:#1e293b;">
-                    <option value="family" {{ old('role', 'family') === 'family' ? 'selected' : '' }}>Family Member</option>
-                    <option value="caregiver" {{ old('role') === 'caregiver' ? 'selected' : '' }}>Professional Caregiver</option>
-                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Administrator</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <label for="email">Email address</label>
                 <input id="email" type="email" name="email" value="{{ old('email') }}" placeholder="you@example.com" autocomplete="email" required autofocus>
             </div>
