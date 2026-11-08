@@ -86,14 +86,6 @@
                         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>
                         <span>Admin Console</span>
                     </a>
-                    <a href="{{ route('dashboard') }}" class="ec-nav-link {{ request()->routeIs('dashboard') ? 'is-active' : '' }}">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>
-                        <span>Family View</span>
-                    </a>
-                    <a href="{{ route('caregiver.dashboard') }}" class="ec-nav-link {{ request()->routeIs('caregiver.dashboard') ? 'is-active' : '' }}">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3"/></svg>
-                        <span>Caregiver View</span>
-                    </a>
                     <a href="{{ route('sentiment.index') }}" class="ec-nav-link {{ request()->routeIs('sentiment.*') ? 'is-active' : '' }}">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16"/><path d="m7 15 4-4 3 2 5-7"/><circle cx="19" cy="6" r="1.5"/></svg>
                         <span>Sentiment Analytics</span>

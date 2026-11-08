@@ -62,12 +62,17 @@
 
         <div class="elder-actions">
             <a href="{{ route('elder.show', $elder->id) }}" class="primary-button view-profile-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>
                 View Full Profile
             </a>
-            <a href="{{ route('elder.profile.edit', $elder->id) }}" class="secondary-button">
-                Edit Record
-            </a>
+            @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                <a href="{{ route('elder.profile.edit', $elder->id) }}" class="secondary-button">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Edit Record
+                </a>
+            @endif
             <a href="{{ route('visits.index', $elder->id) }}" class="secondary-button">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3"/></svg>
                 Visit History
             </a>
         </div>
@@ -237,7 +242,7 @@
                 </div>
                 <div>
                     <span>Mobility Status</span>
-                    <strong>{{ $elder->mobility_status ?? 'Assisted' }} ({{ $elder->independence_score ?? 65 }}%)</strong>
+                    <strong>{{ $elder->mobility_status ?? 'Assisted' }}</strong>
                 </div>
                 <div>
                     <span>Primary Physician</span>
