@@ -91,7 +91,8 @@
                     <div class="cg-elder-top">
                         <div class="cg-elder-avatar">
                             @if($elder->photo_url)
-                                <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}">
+                                <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                                <span style="display:none; width:100%; height:100%; place-items:center;">{{ strtoupper(substr($elder->full_name, 0, 1)) }}</span>
                             @else
                                 {{ strtoupper(substr($elder->full_name, 0, 1)) }}
                             @endif

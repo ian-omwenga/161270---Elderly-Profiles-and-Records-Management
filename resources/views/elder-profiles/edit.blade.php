@@ -85,7 +85,7 @@
 
             @if($elder->photo_url)
                 <div style="margin-bottom:14px; display:flex; align-items:center; gap:12px;">
-                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover;">
+                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover; border:1px solid #cbd5e1; box-shadow:0 2px 6px rgba(0,0,0,0.06);" onerror="this.style.display='none';">
                     <span style="font-size:12px; color:#64748b;">Current profile image active. Uploading a new file will replace it.</span>
                 </div>
             @endif
@@ -111,10 +111,6 @@
                     </select>
                 </div>
                 <div class="ep-field">
-                    <label for="independence_score">Independence Scale (%)</label>
-                    <input type="number" id="independence_score" name="independence_score" value="{{ old('independence_score', $elder->independence_score ?? 65) }}" min="0" max="100">
-                </div>
-                <div class="ep-field">
                     <label for="assigned_caregiver_id">Assigned Primary Caregiver</label>
                     <select id="assigned_caregiver_id" name="assigned_caregiver_id">
                         <option value="">-- Unassigned --</option>
@@ -130,7 +126,7 @@
             <div class="ep-row">
                 <div class="ep-field">
                     <label for="physician_name">Primary Physician</label>
-                    <input type="text" id="physician_name" name="physician_name" value="{{ old('physician_name', $elder->physician_name) }}" placeholder="e.g. Dr. Stephen Obonyo">
+                    <input type="text" id="physician_name" name="physician_name" value="{{ old('physician_name', $elder->physician_name) }}" placeholder="e.g. Dr. David Kimani">
                 </div>
                 <div class="ep-field">
                     <label for="physician_phone">Physician Phone</label>

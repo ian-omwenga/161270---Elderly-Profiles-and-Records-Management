@@ -84,7 +84,7 @@ class ElderCareSeeder extends Seeder
                 'gender' => 'Male',
                 'blood_type' => 'O+',
                 'residence' => 'Lang\'ata Homes, Wing B, Nairobi',
-                'physician_name' => 'Dr. Stephen Obonyo',
+                'physician_name' => 'Dr. David Kimani',
                 'physician_phone' => '+254 700 888 999',
                 'mobility_status' => 'Assisted',
                 'independence_score' => 65,

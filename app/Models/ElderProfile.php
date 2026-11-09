@@ -68,7 +68,7 @@ class ElderProfile extends Model
 
     public function getPhotoUrlAttribute(): ?string
     {
-        if ($this->photo_path && Storage::disk('public')->exists($this->photo_path)) {
+        if (!empty($this->photo_path)) {
             return route('elder.photo', $this->id);
         }
 

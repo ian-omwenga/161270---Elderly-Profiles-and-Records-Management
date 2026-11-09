@@ -12,9 +12,7 @@ use App\Http\Controllers\CaregiverDashboardController;
 use App\Http\Controllers\AdminDashboardController;
 
 /*
-|--------------------------------------------------------------------------
 | Authentication Routes
-|--------------------------------------------------------------------------
 */
 Route::get('/', function () {
     return redirect()->route('login');
@@ -24,15 +22,15 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Publicly stream elder profile photo for <img> tags across all ports and browsers
+Route::get('/elder/{elder}/photo', [ElderProfileController::class, 'photo'])->name('elder.photo');
 
 /*
-|--------------------------------------------------------------------------
 | Authenticated Application Routes
-|--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Family Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -48,11 +46,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/elder/create', [ElderProfileController::class, 'create'])->name('elder.create');
     Route::post('/elder', [ElderProfileController::class, 'store'])->name('elder.store');
     Route::get('/elder/{elder}', [ElderProfileController::class, 'show'])->name('elder.show');
-    Route::get('/elder/{elder}/photo', [ElderProfileController::class, 'photo'])->name('elder.photo');
     Route::get('/elder/{elder}/edit', [ElderProfileController::class, 'edit'])->name('elder.profile.edit');
     Route::put('/elder/{elder}', [ElderProfileController::class, 'update'])->name('elder.profile.update');
 
-    // Caregiver Visits & Procedures Logging
+    // Caregiver Visits & Procedures Logging (Restricted to Caregiver)
     Route::get('/elder/{elder}/visits', [VisitController::class, 'index'])->name('visits.index');
     Route::get('/elder/{elder}/visits/create', [VisitController::class, 'create'])->name('visits.create');
     Route::post('/elder/{elder}/visits', [VisitController::class, 'store'])->name('visits.store');

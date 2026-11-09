@@ -42,7 +42,8 @@
         <div class="elder-information">
             <div class="elder-avatar">
                 @if($elder->photo_url)
-                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="elder-avatar-img">
+                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="elder-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="elder-avatar-fallback" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">{{ strtoupper(substr($elder->full_name, 0, 1)) }}</span>
                 @else
                     {{ strtoupper(substr($elder->full_name, 0, 1)) }}
                 @endif
@@ -61,12 +62,17 @@
 
         <div class="elder-actions">
             <a href="{{ route('elder.show', $elder->id) }}" class="primary-button view-profile-btn">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg>
                 View Full Profile
             </a>
-            <a href="{{ route('elder.profile.edit', $elder->id) }}" class="secondary-button">
-                Edit Record
-            </a>
+            @if(auth()->user()->role === 'family' && (int) $elder->created_by === (int) auth()->id())
+                <a href="{{ route('elder.profile.edit', $elder->id) }}" class="secondary-button">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Edit Record
+                </a>
+            @endif
             <a href="{{ route('visits.index', $elder->id) }}" class="secondary-button">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16M8 14h3"/></svg>
                 Visit History
             </a>
         </div>
@@ -76,26 +82,26 @@
     <section class="summary-grid">
         <div class="summary-card">
             <p class="card-label">MOOD</p>
-            <h2>{{ $latestMood }}/5</h2>
-            <p class="card-description">Latest recorded mood</p>
+            <h2>{{ $latestMood !== null ? $latestMood . '/5' : '—' }}</h2>
+            <p class="card-description">{{ $latestVisit ? 'Latest recorded: ' . ($latestVisit->visit_date ? \Carbon\Carbon::parse($latestVisit->visit_date)->format('M d') : 'Recent visit') : 'Pending caregiver visit' }}</p>
         </div>
 
         <div class="summary-card">
             <p class="card-label">APPETITE</p>
-            <h2>{{ $latestAppetite }}/5</h2>
-            <p class="card-description">Latest recorded appetite</p>
+            <h2>{{ $latestAppetite !== null ? $latestAppetite . '/5' : '—' }}</h2>
+            <p class="card-description">{{ $latestVisit ? 'Latest recorded: ' . ($latestVisit->visit_date ? \Carbon\Carbon::parse($latestVisit->visit_date)->format('M d') : 'Recent visit') : 'Pending caregiver visit' }}</p>
         </div>
 
         <div class="summary-card">
             <p class="card-label">PAIN LEVEL</p>
-            <h2>{{ $latestPain }}/5</h2>
-            <p class="card-description">Latest recorded pain</p>
+            <h2>{{ $latestPain !== null ? $latestPain . '/5' : '—' }}</h2>
+            <p class="card-description">{{ $latestVisit ? 'Latest recorded: ' . ($latestVisit->visit_date ? \Carbon\Carbon::parse($latestVisit->visit_date)->format('M d') : 'Recent visit') : 'Pending caregiver visit' }}</p>
         </div>
 
         <div class="summary-card">
             <p class="card-label">MEDICATION ADHERENCE</p>
-            <h2>{{ $medicationAdherence }}%</h2>
-            <p class="card-description">Based on recorded visits</p>
+            <h2>{{ $medicationAdherence !== null ? $medicationAdherence . '%' : '—' }}</h2>
+            <p class="card-description">{{ $medicationAdherence !== null ? 'Based on recorded visits' : 'Pending caregiver visit' }}</p>
         </div>
     </section>
 
@@ -236,11 +242,11 @@
                 </div>
                 <div>
                     <span>Mobility Status</span>
-                    <strong>{{ $elder->mobility_status ?? 'Assisted' }} ({{ $elder->independence_score ?? 65 }}%)</strong>
+                    <strong>{{ $elder->mobility_status ?? 'Assisted' }}</strong>
                 </div>
                 <div>
                     <span>Primary Physician</span>
-                    <strong>{{ $elder->physician_name ?? 'Dr. Stephen Obonyo' }}</strong>
+                    <strong>{{ $elder->physician_name ?? 'Dr. David Kimani' }}</strong>
                 </div>
                 <div>
                     <span>Emergency Contact</span>
@@ -267,64 +273,6 @@
 </div>
 @endsection
 
-<<<<<<< Updated upstream
-@if ($healthTrends->isNotEmpty())
-<script>
-    const trendData = @json($healthTrends);
-    const labels = trendData.map(item => new Date(item.visit_date).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short'
-    }));
-
-    const chartCanvas = document.getElementById('healthChart');
-
-    new Chart(chartCanvas, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [
-                {
-                    label: 'Mood',
-                    data: trendData.map(item => item.mood_score),
-                    borderColor: '#4777e8',
-                    backgroundColor: 'rgba(71, 119, 232, 0.12)',
-                    pointBackgroundColor: '#4777e8',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.38,
-                    fill: false,
-                    spanGaps: true
-                },
-                {
-                    label: 'Appetite',
-                    data: trendData.map(item => item.appetite_score),
-                    borderColor: '#16a085',
-                    backgroundColor: 'rgba(22, 160, 133, 0.10)',
-                    pointBackgroundColor: '#16a085',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.38,
-                    fill: false,
-                    spanGaps: true
-                },
-                {
-                    label: 'Pain',
-                    data: trendData.map(item => item.pain_level),
-                    borderColor: '#e47b62',
-                    backgroundColor: 'rgba(228, 123, 98, 0.10)',
-                    pointBackgroundColor: '#e47b62',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
-                    tension: 0.38,
-                    fill: false,
-                    spanGaps: true
-=======
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
@@ -338,102 +286,57 @@
     const appetiteData = trendData.map(item => item.appetite_score);
     const painData = trendData.map(item => item.pain_level);
 
-    const ctx = document.getElementById('healthChart').getContext('2d');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels.length ? labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-            datasets: [
-                {
-                    label: 'Mood',
-                    data: moodData.length ? moodData : [3, 4, 3, 2, 4, 4, 4],
-                    borderColor: '#2563eb',
-                    backgroundColor: '#2563eb',
-                    tension: 0.35,
-                    borderWidth: 2,
-                    fill: false
-                },
-                {
-                    label: 'Appetite',
-                    data: appetiteData.length ? appetiteData : [4, 4, 3, 2, 4, 5, 4],
-                    borderColor: '#10b981',
-                    backgroundColor: '#10b981',
-                    tension: 0.35,
-                    borderWidth: 2,
-                    fill: false
-                },
-                {
-                    label: 'Pain Level',
-                    data: painData.length ? painData : [1, 1, 2, 3, 1, 1, 1],
-                    borderColor: '#ef4444',
-                    backgroundColor: '#ef4444',
-                    tension: 0.35,
-                    borderWidth: 2,
-                    fill: false
->>>>>>> Stashed changes
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-<<<<<<< Updated upstream
-            interaction: { mode: 'index', intersect: false },
-            animation: { duration: 700, easing: 'easeOutQuart' },
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        usePointStyle: true,
-                        pointStyle: 'circle',
-                        boxWidth: 8,
-                        boxHeight: 8,
-                        padding: 22,
-                        color: '#64748b',
-                        font: { family: 'DM Sans', size: 12 }
+    const ctx = document.getElementById('healthChart');
+    if (ctx) {
+        new Chart(ctx.getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels.length ? labels : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Mood',
+                        data: moodData.length ? moodData : [3, 4, 3, 2, 4, 4, 4],
+                        borderColor: '#2563eb',
+                        backgroundColor: '#2563eb',
+                        tension: 0.35,
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Appetite',
+                        data: appetiteData.length ? appetiteData : [4, 4, 3, 2, 4, 5, 4],
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b981',
+                        tension: 0.35,
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'Pain Level',
+                        data: painData.length ? painData : [1, 1, 2, 3, 1, 1, 1],
+                        borderColor: '#ef4444',
+                        backgroundColor: '#ef4444',
+                        tension: 0.35,
+                        borderWidth: 2,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: { stepSize: 1 }
                     }
                 },
-                tooltip: {
-                    backgroundColor: '#172033',
-                    padding: 12,
-                    cornerRadius: 10,
-                    titleFont: { family: 'DM Sans', weight: '700' },
-                    bodyFont: { family: 'DM Sans' }
+                plugins: {
+                    legend: { display: true }
                 }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#94a3b8', font: { family: 'DM Sans', size: 11 } },
-                    border: { display: false }
-                },
-                y: {
-                    min: 0,
-                    max: 5,
-                    ticks: { stepSize: 1, color: '#94a3b8', font: { family: 'DM Sans', size: 11 } },
-                    grid: { color: '#edf1f6', drawBorder: false },
-                    border: { display: false }
-                }
-=======
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 5,
-                    ticks: { stepSize: 1 }
-                }
-            },
-            plugins: {
-                legend: { display: true }
->>>>>>> Stashed changes
             }
-        }
-    });
+        });
+    }
 </script>
-<<<<<<< Updated upstream
-@endif
-</body>
-</html>
-=======
 @endpush
->>>>>>> Stashed changes

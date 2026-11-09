@@ -32,9 +32,6 @@ class CareVisit extends Model
         'pain_level' => 'integer',
         'medication_taken' => 'boolean',
         'urgent_concern' => 'boolean',
-        'mood_score' => 'integer',
-        'appetite_score' => 'integer',
-        'pain_level' => 'integer',
     ];
 
     public function elder(): BelongsTo

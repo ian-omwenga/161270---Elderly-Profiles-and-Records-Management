@@ -17,9 +17,13 @@ class VisitController extends Controller
     {
         $user = Auth::user();
 
-        // Family members can only see their own elder's visits. Caregivers and Admins have access.
+        // Family members can only see their own elder's visits. Caregivers can only see assigned elders.
         if ($user->role === 'family' && (int) $elder->created_by !== (int) $user->id) {
             abort(403, 'Unauthorized access to elder visit records.');
+        }
+
+        if ($user->role === 'caregiver' && (int) $elder->assigned_caregiver_id !== (int) $user->id) {
+            abort(403, 'Unauthorized access. You are not assigned to this elder profile.');
         }
 
         $visits = CareVisit::where('elder_id', $elder->id)
@@ -35,6 +39,16 @@ class VisitController extends Controller
      */
     public function create(ElderProfile $elder)
     {
+        $user = Auth::user();
+
+        if ($user->role !== 'caregiver' && !$user->isAdmin()) {
+            abort(403, 'Access denied. Only registered caregivers can record visit notes.');
+        }
+
+        if ($user->role === 'caregiver' && (int) $elder->assigned_caregiver_id !== (int) $user->id) {
+            abort(403, 'Access denied. You are only authorized to log visits for elders assigned to you.');
+        }
+
         $elder->load(['medicationList', 'allergyList', 'creator']);
 
         return view('visits.create', compact('elder'));
@@ -45,6 +59,16 @@ class VisitController extends Controller
      */
     public function store(Request $request, ElderProfile $elder)
     {
+        $user = Auth::user();
+
+        if ($user->role !== 'caregiver' && !$user->isAdmin()) {
+            abort(403, 'Access denied. Only caregivers can record care visit notes.');
+        }
+
+        if ($user->role === 'caregiver' && (int) $elder->assigned_caregiver_id !== (int) $user->id) {
+            abort(403, 'Access denied. You are only authorized to log visits for elders assigned to you.');
+        }
+
         $validated = $request->validate([
             'visit_date' => ['required', 'date'],
             'clock_in' => ['nullable', 'string', 'max:20'],

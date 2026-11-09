@@ -20,7 +20,7 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role' => ['required', 'in:family,caregiver'],
+            'role' => ['required', 'in:family,caregiver,admin'],
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
@@ -36,6 +36,10 @@ class AuthController extends Controller
 
         if ($user->role === 'caregiver') {
             return redirect()->route('caregiver.dashboard')->with('status', 'Welcome to the Caregiver Portal.');
+        }
+
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')->with('status', 'Welcome to the Administrator Console.');
         }
 
         return redirect()->route('elder.create')->with('status', 'Welcome! Please set up your first elder profile.');
@@ -56,15 +60,14 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            if (Auth::user()->role === 'family') {
-                return redirect()->route('dashboard');
-            }
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
 
-            if (Auth::user()->role === 'caregiver') {
+            if ($user->role === 'caregiver') {
                 return redirect()->route('caregiver.dashboard');
             }
 
-            if (Auth::user()->role === 'admin') {
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
 
