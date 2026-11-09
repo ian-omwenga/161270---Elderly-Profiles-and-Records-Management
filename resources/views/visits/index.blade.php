@@ -42,7 +42,7 @@
     <section class="visits-profile-card">
         <div class="visits-profile-avatar" style="overflow: hidden; border-radius: 17px;">
             @if($elder->photo_url)
-                <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" style="width:100%; height:100%; object-fit:cover;" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = '{{ asset('storage/' . $elder->photo_path) }}'; } else { this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
                 <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">{{ strtoupper(substr($elder->full_name, 0, 1)) }}</span>
             @else
                 {{ strtoupper(substr($elder->full_name, 0, 1)) }}

@@ -69,7 +69,7 @@ class ElderProfile extends Model
     public function getPhotoUrlAttribute(): ?string
     {
         if (!empty($this->photo_path)) {
-            return route('elder.photo', $this->id);
+            return route('elder.photo', $this->id, false);
         }
 
         return null;

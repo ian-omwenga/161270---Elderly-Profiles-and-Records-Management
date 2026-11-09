@@ -24,7 +24,7 @@
         <div class="ep-sidebar-card">
             <div class="ep-photo-container">
                 @if($elder->photo_url)
-                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="ep-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="ep-photo" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = '{{ asset('storage/' . $elder->photo_path) }}'; } else { this.style.display='none'; this.nextElementSibling.style.display='grid'; }">
                     <div class="ep-photo-fallback" style="display:none;">
                         {{ strtoupper(substr($elder->full_name, 0, 1)) }}
                     </div>
