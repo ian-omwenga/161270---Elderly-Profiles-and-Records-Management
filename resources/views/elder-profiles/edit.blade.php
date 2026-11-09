@@ -85,7 +85,7 @@
 
             @if($elder->photo_url)
                 <div style="margin-bottom:14px; display:flex; align-items:center; gap:12px;">
-                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover; border:1px solid #cbd5e1; box-shadow:0 2px 6px rgba(0,0,0,0.06);" onerror="this.style.display='none';">
+                    <img src="{{ $elder->photo_url }}" alt="Current Photo" style="width:50px; height:50px; border-radius:10px; object-fit:cover; border:1px solid #cbd5e1; box-shadow:0 2px 6px rgba(0,0,0,0.06);" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = '{{ asset('storage/' . $elder->photo_path) }}'; } else { this.style.display='none'; }">
                     <span style="font-size:12px; color:#64748b;">Current profile image active. Uploading a new file will replace it.</span>
                 </div>
             @endif

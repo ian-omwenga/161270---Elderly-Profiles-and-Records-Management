@@ -46,9 +46,18 @@ class ElderProfileController extends Controller
     {
         if (!empty($elder->photo_path)) {
             $path = str_replace('\\', '/', $elder->photo_path);
+
+            // Locate file across public disk, storage path, or public storage
+            $fullPath = null;
             if (Storage::disk('public')->exists($path)) {
                 $fullPath = Storage::disk('public')->path($path);
-                
+            } elseif (file_exists(storage_path('app/public/' . $path))) {
+                $fullPath = storage_path('app/public/' . $path);
+            } elseif (file_exists(public_path('storage/' . $path))) {
+                $fullPath = public_path('storage/' . $path);
+            }
+
+            if ($fullPath && file_exists($fullPath)) {
                 $extension = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
                 $mimeTypes = [
                     'jpg'  => 'image/jpeg',
@@ -59,9 +68,11 @@ class ElderProfileController extends Controller
                     'svg'  => 'image/svg+xml',
                 ];
                 $contentType = $mimeTypes[$extension] ?? (function_exists('mime_content_type') ? @mime_content_type($fullPath) : null) ?: 'image/jpeg';
+                $content = file_get_contents($fullPath);
 
-                return response()->file($fullPath, [
+                return response($content, 200, [
                     'Content-Type' => $contentType,
+                    'Content-Length' => strlen($content),
                     'Content-Disposition' => 'inline; filename="' . basename($fullPath) . '"',
                     'Cache-Control' => 'public, max-age=86400',
                 ]);
@@ -122,6 +133,12 @@ class ElderProfileController extends Controller
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('elder_photos', 'public');
+            $publicTarget = public_path('storage/' . $photoPath);
+            $storageSource = Storage::disk('public')->path($photoPath);
+            if (!file_exists($publicTarget) && file_exists($storageSource)) {
+                @mkdir(dirname($publicTarget), 0755, true);
+                @copy($storageSource, $publicTarget);
+            }
         }
 
         $elderData = [
@@ -246,7 +263,17 @@ class ElderProfileController extends Controller
             if ($elder->photo_path && Storage::disk('public')->exists($elder->photo_path)) {
                 Storage::disk('public')->delete($elder->photo_path);
             }
+            if ($elder->photo_path && file_exists(public_path('storage/' . $elder->photo_path))) {
+                @unlink(public_path('storage/' . $elder->photo_path));
+            }
+
             $validated['photo_path'] = $request->file('photo')->store('elder_photos', 'public');
+            $publicTarget = public_path('storage/' . $validated['photo_path']);
+            $storageSource = Storage::disk('public')->path($validated['photo_path']);
+            if (!file_exists($publicTarget) && file_exists($storageSource)) {
+                @mkdir(dirname($publicTarget), 0755, true);
+                @copy($storageSource, $publicTarget);
+            }
         }
 
         $elder->update([
