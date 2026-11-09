@@ -38,9 +38,13 @@ Route::middleware('auth')->group(function () {
     // Caregiver Dashboard
     Route::get('/caregiver/dashboard', [CaregiverDashboardController::class, 'index'])->name('caregiver.dashboard');
 
-    // Admin Dashboard
+    // Admin Dashboard & User / Elder Management
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::patch('/admin/users/{user}/role', [AdminDashboardController::class, 'updateUserRole'])->name('admin.users.role');
+    Route::put('/admin/users/{user}', [AdminDashboardController::class, 'updateUser'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::put('/admin/elders/{elder}/minor', [AdminDashboardController::class, 'updateElderMinor'])->name('admin.elders.updateMinor');
+    Route::delete('/admin/elders/{elder}', [AdminDashboardController::class, 'deleteElder'])->name('admin.elders.delete');
 
     // Dedicated Elder Profiles
     Route::get('/elder/create', [ElderProfileController::class, 'create'])->name('elder.create');
