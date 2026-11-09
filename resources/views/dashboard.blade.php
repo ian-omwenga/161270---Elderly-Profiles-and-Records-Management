@@ -42,7 +42,7 @@
         <div class="elder-information">
             <div class="elder-avatar">
                 @if($elder->photo_url)
-                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="elder-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" class="elder-avatar-img" onerror="if (!this.dataset.fallback) { this.dataset.fallback = '1'; this.src = '{{ asset('storage/' . $elder->photo_path) }}'; } else { this.style.display='none'; this.nextElementSibling.style.display='flex'; }">
                     <span class="elder-avatar-fallback" style="display:none; width:100%; height:100%; align-items:center; justify-content:center;">{{ strtoupper(substr($elder->full_name, 0, 1)) }}</span>
                 @else
                     {{ strtoupper(substr($elder->full_name, 0, 1)) }}
