@@ -28,6 +28,28 @@ class CaregiverAndElderTest extends TestCase
         $profileResponse->assertDontSee('Dr. Stephen Obonyo');
     }
 
+    public function test_family_can_create_elder_profile_without_independence_score(): void
+    {
+        $familyUser = User::where('role', 'family')->first();
+        $this->assertNotNull($familyUser);
+
+        $response = $this->actingAs($familyUser)->post(route('elder.store'), [
+            'full_name' => 'Test Created Elder ' . time(),
+            'date_of_birth' => '1955-05-15',
+            'gender' => 'Female',
+            'blood_type' => 'O+',
+            'residence' => 'Nairobi Kilimani',
+            'physician_name' => 'Dr. David Kimani',
+            'physician_phone' => '+254 712 345 678',
+            'mobility_status' => 'Assisted',
+            'emergency_contact_name' => 'Test Contact',
+            'emergency_contact_phone' => '+254 722 999 888',
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+    }
+
     public function test_family_cannot_access_visit_create_or_store(): void
     {
         $elder = ElderProfile::first();
@@ -183,5 +205,78 @@ class CaregiverAndElderTest extends TestCase
             'password' => 'password123',
         ]);
         $adminResponse->assertRedirect(route('admin.dashboard'));
+    }
+
+    public function test_admin_can_manage_users_and_elders_and_delete_records(): void
+    {
+        $admin = User::where('role', 'admin')->first();
+        $this->assertNotNull($admin);
+
+        // 1. Admin dashboard loads and sees users and elders
+        $response = $this->actingAs($admin)->get(route('admin.dashboard'));
+        $response->assertStatus(200);
+        $response->assertSee('User Accounts Management');
+        $response->assertSee('Elder Care Profiles Management');
+
+        // 2. Admin can edit user minor info
+        $targetUser = User::where('role', 'caregiver')->first();
+        $updateUserRes = $this->actingAs($admin)->put(route('admin.users.update', $targetUser->id), [
+            'name' => 'Updated Caregiver Name',
+            'email' => $targetUser->email,
+            'phone' => '+254 799 111 222',
+            'role' => 'caregiver',
+        ]);
+        $updateUserRes->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('users', ['id' => $targetUser->id, 'name' => 'Updated Caregiver Name']);
+
+        // 3. Admin can edit elder minor info (e.g. reassign caregiver & update emergency contact)
+        $elder = ElderProfile::first();
+        $updateElderRes = $this->actingAs($admin)->put(route('admin.elders.updateMinor', $elder->id), [
+            'assigned_caregiver_id' => $targetUser->id,
+            'residence' => 'Updated Admin Residence',
+            'physician_name' => 'Dr. David Kimani',
+            'physician_phone' => '+254 711 000 111',
+            'emergency_contact_name' => 'Updated Emergency Contact',
+            'emergency_contact_phone' => '+254 722 333 444',
+        ]);
+        $updateElderRes->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('elder_profiles', [
+            'id' => $elder->id,
+            'residence' => 'Updated Admin Residence',
+            'assigned_caregiver_id' => $targetUser->id,
+        ]);
+
+        // 4. Admin can delete a temporary elder
+        $tempElder = ElderProfile::create([
+            'created_by' => $admin->id,
+            'full_name' => 'Delete Me Elder',
+            'date_of_birth' => '1950-01-01',
+            'gender' => 'Male',
+            'emergency_contact_name' => 'Contact',
+            'emergency_contact_phone' => '12345678',
+        ]);
+        $delElderRes = $this->actingAs($admin)->delete(route('admin.elders.delete', $tempElder->id));
+        $delElderRes->assertSessionHasNoErrors();
+        $this->assertDatabaseMissing('elder_profiles', ['id' => $tempElder->id]);
+
+        // 5. Admin can delete a temporary user (and cannot delete self)
+        $delSelfRes = $this->actingAs($admin)->delete(route('admin.users.delete', $admin->id));
+        $delSelfRes->assertSessionHasErrors(['error']);
+
+        $tempUser = User::create([
+            'name' => 'Temporary User',
+            'email' => 'tempuser_' . time() . '@test.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('password123'),
+            'role' => 'family',
+        ]);
+        $delUserRes = $this->actingAs($admin)->delete(route('admin.users.delete', $tempUser->id));
+        $delUserRes->assertSessionHasNoErrors();
+        $this->assertDatabaseMissing('users', ['id' => $tempUser->id]);
+    }
+
+    public function test_non_admin_cannot_access_admin_dashboard_or_actions(): void
+    {
+        $caregiver = User::where('role', 'caregiver')->first();
+        $this->actingAs($caregiver)->get(route('admin.dashboard'))->assertStatus(403);
     }
 }
