@@ -1,0 +1,131 @@
+note_id,visit_note,true_label
+1,"Patient complained of unbearable pain in lower back, could not get out of bed",negative
+2,"Patient was very agitated and combative, refused all assistance from caregiver",negative
+3,"Patient's cognitive function seems improved today, very sharp and responsive",positive
+4,"Patient completed all morning exercises without assistance, very motivated today",positive
+5,Patient expressed gratitude and said she feels very well looked after,positive
+6,Patient's balance and coordination have visibly improved since last visit,positive
+7,"Patient was confused about time of day, thought it was morning when it was evening",negative
+8,"Patient refused to leave bed all day, very weak and unable to support weight",negative
+9,"Patient completed all daily tasks without any assistance, very proud of herself",positive
+10,"Patient refused to bathe or change clothes, very uncooperative and hostile",negative
+11,Patient took all scheduled medication on time and without any resistance,positive
+12,"Patient reported sleeping much better this week, energy levels noticeably improved",positive
+13,"Patient socialised with neighbour this morning, very good for her wellbeing",positive
+14,"Patient was shaking and sweating profusely, temperature was elevated at 38.9",negative
+15,"Patient reported feeling much better today, pain levels significantly reduced",positive
+16,"Patient was very friendly and welcoming, offered caregiver a cup of tea",positive
+17,Patient enjoyed light stretching session and said she felt fantastic afterwards,positive
+18,"All scheduled tasks completed, patient was alert and in a neutral mood today",neutral
+19,"Patient refused physiotherapy exercises, said the pain was too unbearable",negative
+20,"Patient refused social interaction, stayed silent and withdrawn throughout the visit",negative
+21,Patient slept very well last night and woke up feeling refreshed and energetic,positive
+22,Patient enjoyed a full and satisfying lunch and commented on how tasty it was,positive
+23,Patient was trembling uncontrollably and complained of feeling extremely cold,negative
+24,Patient had a video call with family and was very happy and animated throughout,positive
+25,Patient complained of severe chest pain and difficulty breathing during visit,negative
+26,"Patient slept eight hours uninterrupted, woke up rested and in great mood",positive
+27,"Visit proceeded as normal, patient was quiet but responsive to communication",neutral
+28,"Patient vomited immediately after taking medication, concerned about absorption",negative
+29,"All care activities completed on schedule, patient was cooperative throughout",neutral
+30,"Patient had a fall near the bathroom door, appeared shaken and confused afterwards",negative
+31,"Patient expressed feelings of hopelessness, said nobody cares about her anymore",negative
+32,"Patient took medication without any prompting, very self-sufficient this morning",positive
+33,"Routine check completed, vitals recorded, no abnormalities noted today",neutral
+34,Caregiver administered medication and assisted with lunch preparation today,neutral
+35,"Patient cried throughout the visit, said she wished she were dead",negative
+36,"Patient expressed feeling happy and content, said she is enjoying the care",positive
+37,"Patient expressed suicidal thoughts, said she no longer wants to continue living",negative
+38,Patient enjoyed reading and completed two chapters of her book this afternoon,positive
+39,"Patient reported no pain during the visit, most comfortable she has been in weeks",positive
+40,"Patient was in excellent spirits today, laughed and chatted throughout the visit",positive
+41,Patient expressed excitement about attending the community event next week,positive
+42,"Patient screamed when caregiver tried to assist with bathing, very distressed",negative
+43,"Patient had a productive morning, completed light household tasks independently",positive
+44,Patient showed no signs of discomfort or distress throughout the entire visit,positive
+45,"Patient said she has not slept properly in several days, very tired and irritable",negative
+46,"Patient followed daily routine without deviation, no issues noted during visit",neutral
+47,"Patient appeared very pale and weak, blood pressure reading was abnormally low",negative
+48,"Patient showed great improvement in mobility, getting in and out of chair easily",positive
+49,Patient was cooperative with all care activities and thanked caregiver warmly,positive
+50,"Patient was smiling and happy, said she feels much better than previous visits",positive
+51,"Patient was extremely forgetful, repeated the same question more than ten times",negative
+52,"Patient was settled and comfortable, completed all routine activities today",neutral
+53,Patient complained of persistent headache and blurred vision for the past two days,negative
+54,"Patient's wound is healing very well, no signs of infection or complications",positive
+55,"Visit carried out as planned, patient had a quiet and uneventful day today",neutral
+56,"Patient became very aggressive when asked to take medication, pushed caregiver away",negative
+57,"Routine visit completed, no significant issues or concerns to report today",neutral
+58,"Patient reported severe joint pain in both knees, could not walk without support",negative
+59,"Patient prepared her own tea this morning, showing great improvement in mobility",positive
+60,"Routine care visit completed, patient was cooperative with all care activities",neutral
+61,"Patient was calm and cooperative throughout the visit, all tasks completed",neutral
+62,"Caregiver visit completed, patient was stable and no concerns were identified",neutral
+63,"Patient was very cooperative and cheerful, enjoyed the music therapy session",positive
+64,Patient ate all three meals with good appetite and drank adequate water today,positive
+65,Patient enjoyed watching her favourite show and was in very good spirits,positive
+66,Patient ate a moderate lunch and took afternoon medication as prescribed,neutral
+67,"Patient completed personal hygiene routine, had lunch and took a short nap",neutral
+68,Patient showed interest in upcoming family visit and was very excited about it,positive
+69,"Noticed unexplained bruising on patient's left arm, patient could not explain",negative
+70,"Patient appeared severely dehydrated, lips very dry and skin lacking elasticity",negative
+71,Patient was found wandering outside the house in the cold without shoes on,negative
+72,"Patient showed extreme fatigue, could barely lift arms or respond to questions",negative
+73,Patient took medication as prescribed and had a quiet and uneventful evening,neutral
+74,"Patient was extremely restless, pacing and appeared very anxious and fearful",negative
+75,"Patient's blood pressure reading was within normal range, very encouraging",positive
+76,"Patient lost balance and nearly fell twice, grip strength significantly reduced",negative
+77,"Patient's mood was upbeat and positive, very talkative and sociable today",positive
+78,Patient completed physiotherapy exercises with great effort and positive attitude,positive
+79,"Patient showed signs of confusion, did not recognise family members or caregiver",negative
+80,"Patient refused to eat lunch or dinner, stomach pains reported throughout day",negative
+81,"Patient was resting when caregiver arrived, completed all scheduled tasks",neutral
+82,Patient complained that her vision has been getting worse over the past few days,negative
+83,"Patient had a seizure-like episode lasting approximately two minutes, very alarming",negative
+84,"Patient had difficulty breathing and lips appeared slightly bluish, very concerning",negative
+85,"Patient's appetite has drastically reduced over the past week, eating almost nothing",negative
+86,"Caregiver completed all assigned tasks, patient was in a calm and stable mood",neutral
+87,"Visit concluded without incident, patient was calm and in a stable condition",neutral
+88,"Patient completed morning routine, watched television for most of the afternoon",neutral
+89,"All medication administered on time, patient responded as expected today",neutral
+90,"Patient experienced difficulty swallowing medication, coughed and choked badly",negative
+91,Patient was enthusiastic about meal preparation and helped with simple tasks,positive
+92,"Patient refused to open the door initially, found her sitting alone in the dark",negative
+93,"Patient took morning medication, completed light exercises and had breakfast",neutral
+94,"Patient took medication as scheduled, ate lunch and rested in the afternoon",neutral
+95,"Patient was very disoriented, did not know what day or year it was",negative
+96,Patient refused to take morning medication and was very agitated throughout the visit,negative
+97,Patient complained of chest tightness and shortness of breath after minimal activity,negative
+98,"Visit went as scheduled, patient was cooperative and all tasks were completed",neutral
+99,Patient engaged in conversation enthusiastically and recalled past memories clearly,positive
+100,Patient rested for most of the morning and had lunch at the usual time,neutral
+101,"Patient had a wonderful breakfast and requested seconds, very good appetite today",positive
+102,"All daily care tasks completed, patient was responsive and stable throughout",neutral
+103,Patient completed medication schedule perfectly today without any issues,positive
+104,"Patient was alert and engaged throughout the visit, asked many questions",positive
+105,"Patient's skin colour looks much healthier, good hydration and nutrition evident",positive
+106,"Patient fell asleep mid-conversation, very difficult to keep alert during visit",negative
+107,"Patient was energetic and asked to go for a walk, completed full route today",positive
+108,Patient was awake and sitting in the living room when caregiver arrived today,neutral
+109,"Patient's appetite has improved significantly, eating regular full meals now",positive
+110,Patient participated in puzzle activity and was engaged and focused throughout,positive
+111,"Patient's wound from last week appears infected, red and swelling around the area",negative
+112,Patient had an episode of incontinence and was deeply embarrassed and upset,negative
+113,"Patient had a quiet afternoon, watched television and had a light snack",neutral
+114,"Patient was extremely distressed and crying, said she felt very lonely and abandoned",negative
+115,"Patient refused all food and drink, seemed very weak and unresponsive",negative
+116,"Patient walked around the garden independently, much stronger than last week",positive
+117,"Patient laughed and joked throughout the visit, very positive energy today",positive
+118,"Patient refused evening medication again, became very angry when reminded",negative
+119,"Patient did all personal hygiene tasks independently, great progress this week",positive
+120,"Routine visit completed, patient ate dinner and retired to bed at usual time",neutral
+121,"Patient completed morning exercises at a moderate pace, ate a light breakfast",neutral
+122,"Patient was very independent today, handled morning routine entirely on her own",positive
+123,"Patient slept all day, unresponsive to verbal communication, very lethargic",negative
+124,Patient enjoyed listening to music and was singing along during the afternoon,positive
+125,"Patient showed signs of severe memory loss, could not remember breakfast",negative
+126,Patient had breakfast and completed morning hygiene routine without assistance,neutral
+127,"Patient was found sitting on the floor, unable to explain how she got there",negative
+128,"Patient showed excellent memory recall today, remembered family birthdays clearly",positive
+129,Patient vomited twice during the visit and complained of severe dizziness,negative
+130,Patient reported hearing voices and appeared very frightened and paranoid,negative
