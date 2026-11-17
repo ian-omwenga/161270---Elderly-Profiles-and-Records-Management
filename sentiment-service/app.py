@@ -5,7 +5,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 app = Flask(__name__)
 
-# Download the VADER lexicon if this environment has not downloaded it yet.
+
 nltk.download("vader_lexicon", quiet=True)
 analyzer = SentimentIntensityAnalyzer()
 

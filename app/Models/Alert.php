@@ -8,23 +8,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Alert extends Model
 {
     protected $fillable = [
-        'user_id',
-        'elder_id',
+        'visit_id',
+        'family_user_id',
         'message',
         'is_read',
     ];
 
-    protected $casts = [
-        'is_read' => 'boolean',
-    ];
-
-    public function elder(): BelongsTo
+    protected function casts(): array
     {
-        return $this->belongsTo(ElderProfile::class, 'elder_id');
+        return [
+            'is_read' => 'boolean',
+        ];
     }
 
-    public function user(): BelongsTo
+    public function visit(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(CareVisit::class, 'visit_id');
+    }
+
+    public function familyUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'family_user_id');
     }
 }
