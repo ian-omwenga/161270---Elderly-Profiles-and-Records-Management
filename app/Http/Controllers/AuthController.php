@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -25,8 +25,8 @@ class AuthController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
+            'name' => trim($validated['name']),
+            'email' => strtolower(trim($validated['email'])),
             'phone' => $validated['phone'] ?? null,
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
@@ -47,35 +47,52 @@ class AuthController extends Controller
 
     public function showLogin()
     {
+        // If already logged in, redirect straight to their respective interface
+        if (Auth::check()) {
+            /** @var User $user */
+            $user = Auth::user();
+            if ($user->role === 'caregiver') {
+                return redirect()->route('caregiver.dashboard');
+            }
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.login');
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $email = strtolower(trim($request->input('email')));
+        $password = $request->input('password');
+
+        // Look up user case-insensitively for PostgreSQL compatibility
+        $user = User::whereRaw('LOWER(email) = ?', [$email])->first();
+
+        if ($user && Hash::check($password, $user->password)) {
+            Auth::login($user, $request->boolean('remember'));
             $request->session()->regenerate();
 
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-
             if ($user->role === 'caregiver') {
-                return redirect()->route('caregiver.dashboard');
+                return redirect()->route('caregiver.dashboard')->with('status', 'Welcome back, ' . $user->name);
             }
 
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')->with('status', 'Welcome to the Administrator Console.');
             }
 
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('status', 'Welcome back, ' . $user->name);
         }
 
         return back()->withErrors([
-            'email' => 'The email or password is incorrect.',
+            'email' => 'These credentials do not match our records.',
         ])->onlyInput('email');
     }
 
@@ -86,6 +103,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('info', 'You have been signed out successfully.');
     }
 }

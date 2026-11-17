@@ -55,6 +55,8 @@ class ElderProfileController extends Controller
                 $fullPath = storage_path('app/public/' . $path);
             } elseif (file_exists(public_path('storage/' . $path))) {
                 $fullPath = public_path('storage/' . $path);
+            } elseif (file_exists(public_path($path))) {
+                $fullPath = public_path($path);
             }
 
             if ($fullPath && file_exists($fullPath)) {
@@ -133,11 +135,15 @@ class ElderProfileController extends Controller
         $photoPath = null;
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('elder_photos', 'public');
-            $publicTarget = public_path('storage/' . $photoPath);
             $storageSource = Storage::disk('public')->path($photoPath);
-            if (!file_exists($publicTarget) && file_exists($storageSource)) {
-                @mkdir(dirname($publicTarget), 0755, true);
-                @copy($storageSource, $publicTarget);
+            $target1 = public_path('storage/' . $photoPath);
+            $target2 = public_path($photoPath);
+
+            foreach ([$target1, $target2] as $target) {
+                if (file_exists($storageSource)) {
+                    @mkdir(dirname($target), 0755, true);
+                    @copy($storageSource, $target);
+                }
             }
         }
 
@@ -260,19 +266,24 @@ class ElderProfileController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            if ($elder->photo_path && Storage::disk('public')->exists($elder->photo_path)) {
-                Storage::disk('public')->delete($elder->photo_path);
-            }
-            if ($elder->photo_path && file_exists(public_path('storage/' . $elder->photo_path))) {
+            if ($elder->photo_path) {
+                if (Storage::disk('public')->exists($elder->photo_path)) {
+                    Storage::disk('public')->delete($elder->photo_path);
+                }
                 @unlink(public_path('storage/' . $elder->photo_path));
+                @unlink(public_path($elder->photo_path));
             }
 
             $validated['photo_path'] = $request->file('photo')->store('elder_photos', 'public');
-            $publicTarget = public_path('storage/' . $validated['photo_path']);
             $storageSource = Storage::disk('public')->path($validated['photo_path']);
-            if (!file_exists($publicTarget) && file_exists($storageSource)) {
-                @mkdir(dirname($publicTarget), 0755, true);
-                @copy($storageSource, $publicTarget);
+            $target1 = public_path('storage/' . $validated['photo_path']);
+            $target2 = public_path($validated['photo_path']);
+
+            foreach ([$target1, $target2] as $target) {
+                if (file_exists($storageSource)) {
+                    @mkdir(dirname($target), 0755, true);
+                    @copy($storageSource, $target);
+                }
             }
         }
 
