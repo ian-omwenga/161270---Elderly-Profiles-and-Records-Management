@@ -279,4 +279,51 @@ class CaregiverAndElderTest extends TestCase
         $caregiver = User::where('role', 'caregiver')->first();
         $this->actingAs($caregiver)->get(route('admin.dashboard'))->assertStatus(403);
     }
+
+    public function test_user_registration_with_role_selection_redirects_correctly(): void
+    {
+        $email = 'cg_test_' . time() . '@eldercare.co.ke';
+        $res = $this->post(route('register.submit'), [
+            'name' => 'Caregiver Test User',
+            'email' => $email,
+            'role' => 'caregiver',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $res->assertSessionHasNoErrors();
+        $res->assertRedirect(route('caregiver.dashboard'));
+        $this->assertDatabaseHas('users', [
+            'email' => $email,
+            'role' => 'caregiver',
+        ]);
+    }
+
+    public function test_elder_profile_creation_with_photo_upload(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+
+        $familyUser = User::where('role', 'family')->first();
+        $fakePhoto = \Illuminate\Http\UploadedFile::fake()->image('elder_test.jpg', 300, 300);
+
+        $response = $this->actingAs($familyUser)->post(route('elder.store'), [
+            'full_name' => 'Photo Test Elder ' . time(),
+            'date_of_birth' => '1952-04-10',
+            'gender' => 'Male',
+            'blood_type' => 'A+',
+            'residence' => 'Lavington, Nairobi',
+            'mobility_status' => 'Independent',
+            'emergency_contact_name' => 'Jane Doe',
+            'emergency_contact_phone' => '+254 700 111 222',
+            'photo' => $fakePhoto,
+        ]);
+
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect();
+
+        $createdElder = ElderProfile::where('full_name', 'like', 'Photo Test Elder%')->latest()->first();
+        $this->assertNotNull($createdElder);
+        $this->assertNotNull($createdElder->photo_path);
+        $this->assertNotNull($createdElder->photo_url);
+    }
 }
