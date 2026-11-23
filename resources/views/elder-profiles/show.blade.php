@@ -10,12 +10,38 @@
 @section('content')
 <div class="ep-container">
 
-    <div class="ep-breadcrumb">
-        <a href="{{ route('dashboard') }}">Dashboard</a>
-        <span>/</span>
-        <a href="{{ route('dashboard') }}">Family Overview</a>
-        <span>/</span>
-        <strong>Elder Care Profile</strong>
+    <div class="ep-breadcrumb" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div>
+            @if(auth()->user()->role === 'admin')
+                <a href="{{ route('admin.dashboard', [], false) }}">Admin Console</a>
+                <span>/</span>
+                <strong>Elder Care Profile (Read-Only View)</strong>
+            @elseif(auth()->user()->role === 'caregiver')
+                <a href="{{ route('caregiver.dashboard', [], false) }}">Caregiver Portal</a>
+                <span>/</span>
+                <strong>Elder Care Profile</strong>
+            @else
+                <a href="{{ route('dashboard', [], false) }}">Dashboard</a>
+                <span>/</span>
+                <a href="{{ route('dashboard', [], false) }}">Family Overview</a>
+                <span>/</span>
+                <strong>Elder Care Profile</strong>
+            @endif
+        </div>
+        @if(auth()->user()->role === 'admin')
+            <div style="display:flex; gap:8px; align-items:center;">
+                <a href="{{ route('admin.dashboard', [], false) }}" style="padding:6px 12px; border-radius:8px; background:#f1f5f9; color:#334155; font-size:12px; font-weight:700; text-decoration:none; border:1px solid #cbd5e1;">
+                    ← Back to Admin Console
+                </a>
+                <form method="POST" action="{{ route('admin.elders.delete', $elder->id, false) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to permanently delete this elder profile?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" style="padding:6px 12px; border-radius:8px; background:#fef2f2; color:#dc2626; font-size:12px; font-weight:700; border:1px solid #fecaca; cursor:pointer;">
+                        🗑️ Delete Profile
+                    </button>
+                </form>
+            </div>
+        @endif
     </div>
 
     <div class="ep-grid">

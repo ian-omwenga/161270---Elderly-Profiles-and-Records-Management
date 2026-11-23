@@ -212,11 +212,13 @@ class CaregiverAndElderTest extends TestCase
         $admin = User::where('role', 'admin')->first();
         $this->assertNotNull($admin);
 
-        // 1. Admin dashboard loads and sees users and elders
+        // 1. Admin dashboard loads and sees registered & logged-in users and elders
         $response = $this->actingAs($admin)->get(route('admin.dashboard'));
         $response->assertStatus(200);
-        $response->assertSee('User Accounts Management');
-        $response->assertSee('Elder Care Profiles Management');
+        $response->assertSee('System Users Directory (Registered & Logged-In)', false);
+        $response->assertSee('Elder Care Profiles Directory');
+        $response->assertDontSee('openEditUserModal');
+        $response->assertDontSee('openEditElderModal');
 
         // 2. Admin can edit user minor info
         $targetUser = User::where('role', 'caregiver')->first();
@@ -264,10 +266,16 @@ class CaregiverAndElderTest extends TestCase
         $delSelfRes->assertSessionHasErrors(['error']);
 
         $tempUser = User::create([
-            'name' => 'Temporary User',
+            'name' => 'Temporary Caregiver User',
             'email' => 'tempuser_' . time() . '@test.com',
             'password' => \Illuminate\Support\Facades\Hash::make('password123'),
-            'role' => 'family',
+            'role' => 'caregiver',
+        ]);
+        CareVisit::create([
+            'elder_id' => $elder->id,
+            'caregiver_id' => $tempUser->id,
+            'visit_date' => now(),
+            'visit_note' => 'Routine caregiver visit note before deletion test.',
         ]);
         $delUserRes = $this->actingAs($admin)->delete(route('admin.users.delete', $tempUser->id));
         $delUserRes->assertSessionHasNoErrors();

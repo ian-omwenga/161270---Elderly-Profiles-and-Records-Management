@@ -16,16 +16,25 @@
 .ad-kpi-card p { margin: 4px 0 0; font-size: 11px; color: #16a34a; font-weight: 700; }
 
 /* Tabs */
-.ad-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
+.ad-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; }
 .ad-tab-btn { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
 .ad-tab-btn:hover { background: #f8fafc; color: #0f172a; }
 .ad-tab-btn.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
 .ad-tab-badge { padding: 2px 7px; border-radius: 9999px; font-size: 11px; background: rgba(255,255,255,0.2); }
 .ad-tab-btn:not(.active) .ad-tab-badge { background: #e2e8f0; color: #334155; }
 
+/* Filter Bar & Search */
+.ad-filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; }
+.ad-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.ad-filter-pill { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+.ad-filter-pill:hover { background: #f1f5f9; color: #0f172a; }
+.ad-filter-pill.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
+.ad-search-input { padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 12.5px; color: #0f172a; background: #ffffff; min-width: 240px; outline: none; }
+.ad-search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+
 /* Cards & Tables */
 .ad-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03); margin-bottom: 24px; }
-.ad-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.ad-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
 .ad-card-title { font: 800 18px 'Manrope', sans-serif; color: #0f172a; margin: 0; }
 .ad-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
 .ad-table th { background: #f8fafc; padding: 12px 14px; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; }
@@ -35,27 +44,36 @@
 .role-caregiver { background: #fef3c7; color: #b45309; }
 .role-admin { background: #fee2e2; color: #b91c1c; }
 
+/* Session Status Badges */
+.ad-session-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
+.session-online { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+.session-offline { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+.session-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.session-online .session-dot { background: #16a34a; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2); }
+.session-offline .session-dot { background: #94a3b8; }
+
 /* Action Buttons */
-.btn-action { display: inline-flex; align-items: center; gap: 4px; padding: 6px 11px; border-radius: 7px; font-size: 11.5px; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
-.btn-edit { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
-.btn-edit:hover { background: #e2e8f0; color: #0f172a; }
+.btn-action { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 8px; font-size: 11.5px; font-weight: 700; text-decoration: none; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; font-family: inherit; }
 .btn-delete { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
 .btn-delete:hover { background: #fee2e2; color: #b91c1c; }
 .btn-view { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 .btn-view:hover { background: #dbeafe; color: #1d4ed8; }
+.btn-neutral { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+.btn-neutral:hover { background: #e2e8f0; color: #0f172a; }
 
 /* Modal */
 .ad-modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-.ad-modal { background: #ffffff; border-radius: 18px; width: 100%; max-width: 540px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; animation: popIn 0.2s ease-out; }
+.ad-modal { background: #ffffff; border-radius: 18px; width: 100%; max-width: 560px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; animation: popIn 0.2s ease-out; }
 .ad-modal-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; }
-.ad-modal-head h3 { margin: 0; font: 800 17px 'Manrope', sans-serif; color: #0f172a; }
-.ad-modal-close { background: none; border: none; font-size: 20px; color: #94a3b8; cursor: pointer; line-height: 1; }
+.ad-modal-head h3 { margin: 0; font: 800 18px 'Manrope', sans-serif; color: #0f172a; }
+.ad-modal-close { background: none; border: none; font-size: 22px; color: #94a3b8; cursor: pointer; line-height: 1; }
 .ad-modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
-.ad-form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
-.ad-form-group label { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
-.ad-form-group input, .ad-form-group select { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 13px; color: #0f172a; background: #f8fafc; font-family: inherit; }
-.ad-form-group input:focus, .ad-form-group select:focus { outline: none; border-color: #2563eb; background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
-.ad-modal-foot { display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; background: #f8fafc; border-top: 1px solid #f1f5f9; }
+.ad-modal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 24px; background: #f8fafc; border-top: 1px solid #f1f5f9; }
+
+.ad-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.ad-detail-box { padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; }
+.ad-detail-box small { display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.ad-detail-box strong { font-size: 13.5px; color: #0f172a; word-break: break-word; }
 
 @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 </style>
@@ -65,20 +83,14 @@
     <div class="ad-header">
         <div class="ad-header-info">
             <h1>Welcome back, {{ auth()->user()->name }}</h1>
-            <p>System Administrator Console · Managing users, caregivers, elder profiles, and NLP clinical analytics</p>
+            <p>System Administrator Console · View and manage all registered & logged-in users and elder care profiles</p>
         </div>
         <div style="display:flex; gap:10px;">
-            <button type="button" onclick="window.print()" class="ep-btn-secondary" style="padding:10px 16px; border-radius:10px; font-weight:700; cursor:pointer;">
+            <button type="button" onclick="window.print()" class="btn-action btn-neutral" style="padding:10px 16px; border-radius:10px;">
                 Export System Report
             </button>
         </div>
     </div>
-
-    @if(session('status'))
-        <div style="background:#f0fdf4; border:1px solid #bbf7d0; color:#166534; padding:14px 18px; border-radius:12px; margin-bottom:20px; font-size:13.5px; font-weight:600;">
-            ✓ {{ session('status') }}
-        </div>
-    @endif
 
     @if($errors->any())
         <div style="background:#fef2f2; border:1px solid #fecaca; color:#b91c1c; padding:14px 18px; border-radius:12px; margin-bottom:20px; font-size:13px;">
@@ -90,12 +102,17 @@
         </div>
     @endif
 
-    <!-- 4 High Level Metrics (Figure 4.12) -->
+    <!-- 4 High Level Metrics -->
     <div class="ad-kpi-grid">
         <div class="ad-kpi-card">
-            <small>Total Platform Users</small>
+            <small>Registered & Logged-In Users</small>
             <strong>{{ $totalUsers }}</strong>
-            <p>↑ {{ $totalCaregivers }} Caregivers · {{ $totalFamilies }} Families</p>
+            <p>🟢 {{ $loggedInCount ?? 1 }} Logged In · {{ $totalCaregivers }} Caregivers · {{ $totalFamilies }} Families</p>
+        </div>
+        <div class="ad-kpi-card">
+            <small>Total Elders Registered</small>
+            <strong>{{ $totalElders }}</strong>
+            <p>Active Patient Care Profiles</p>
         </div>
         <div class="ad-kpi-card">
             <small>Avg. Sentiment Polarity</small>
@@ -107,17 +124,12 @@
             <strong style="color: {{ $unresolvedAlerts > 0 ? '#b91c1c' : '#0f172a' }};">{{ $unresolvedAlerts }}</strong>
             <p style="color: {{ $unresolvedAlerts > 0 ? '#b91c1c' : '#64748b' }};">Pending family review</p>
         </div>
-        <div class="ad-kpi-card">
-            <small>Total Elders Registered</small>
-            <strong>{{ $totalElders }}</strong>
-            <p>Active Patient Records</p>
-        </div>
     </div>
 
     <!-- Navigation Tabs -->
     <div class="ad-tabs">
         <button type="button" class="ad-tab-btn active" onclick="switchAdTab('tab-users', this)">
-            <span>👥 User Accounts</span>
+            <span>👥 Registered & Logged-In Users</span>
             <span class="ad-tab-badge">{{ $totalUsers }}</span>
         </button>
         <button type="button" class="ad-tab-btn" onclick="switchAdTab('tab-elders', this)">
@@ -130,36 +142,86 @@
         </button>
     </div>
 
-    <!-- TAB 1: USER ACCOUNTS (Caregivers, Families, Admins) -->
+    <!-- TAB 1: SYSTEM USERS MANAGEMENT (View & Delete Only) -->
     <div id="tab-users" class="ad-tab-pane">
         <div class="ad-card">
             <div class="ad-card-head">
                 <div>
-                    <h2 class="ad-card-title">User Accounts Management</h2>
-                    <span style="font-size:12px; color:#64748b;">Manage caregivers, family members, and administrative platform access</span>
+                    <h2 class="ad-card-title">System Users Directory (Registered & Logged-In)</h2>
+                    <span style="font-size:12px; color:#64748b;">Inspect user profiles, monitor live login status, or permanently remove accounts</span>
                 </div>
             </div>
 
+            <!-- Interactive Filter & Search Bar -->
+            <div class="ad-filter-bar">
+                <div class="ad-filter-pills">
+                    <button type="button" class="ad-filter-pill active" onclick="filterUsersTable('all', this)">
+                        All Registered ({{ $totalUsers }})
+                    </button>
+                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('online', this)">
+                        🟢 Currently Logged In ({{ $loggedInCount ?? 1 }})
+                    </button>
+                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('family', this)">
+                        Family Members ({{ $totalFamilies }})
+                    </button>
+                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('caregiver', this)">
+                        Caregivers ({{ $totalCaregivers }})
+                    </button>
+                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('admin', this)">
+                        Administrators ({{ $totalAdmins ?? 1 }})
+                    </button>
+                </div>
+                <input type="text" id="userSearchInput" class="ad-search-input" placeholder="Search users by name, email, or phone..." oninput="applyUserFilters()">
+            </div>
+
             <div style="overflow-x:auto;">
-                <table class="ad-table">
+                <table class="ad-table" id="adminUsersTable">
                     <thead>
                         <tr>
                             <th>User Name & Email</th>
                             <th>Phone</th>
                             <th>Role</th>
+                            <th>Session Status</th>
+                            <th>Linked Care Records</th>
                             <th>Registered</th>
                             <th style="text-align:right;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($users as $user)
-                            <tr>
+                            @php
+                                $isOnline = in_array((int) $user->id, $loggedInUserIds ?? [(int) auth()->id()], true);
+                                $lastSeenText = $userLastActive[$user->id] ?? ($isOnline ? 'Active session' : 'Registered');
+                                if ($user->role === 'family') {
+                                    $elderNames = $user->createdElders->pluck('full_name')->implode(', ');
+                                    $recordsSummary = ($user->created_elders_count ?? $user->createdElders->count()) . ' Elder Profile(s)';
+                                    $recordsDetail = $elderNames ?: 'No elder profiles created yet';
+                                } elseif ($user->role === 'caregiver') {
+                                    $assignedNames = $user->assignedElders->pluck('full_name')->implode(', ');
+                                    $recordsSummary = ($user->assigned_elders_count ?? $user->assignedElders->count()) . ' Assigned · ' . ($user->care_visits_count ?? 0) . ' Visits';
+                                    $recordsDetail = $assignedNames ? ('Assigned to: ' . $assignedNames) : 'No elders currently assigned';
+                                } else {
+                                    $recordsSummary = 'Full System Access';
+                                    $recordsDetail = 'Platform Administrator';
+                                }
+                            @endphp
+                            <tr class="ad-user-row"
+                                data-role="{{ $user->role }}"
+                                data-online="{{ $isOnline ? '1' : '0' }}"
+                                data-search="{{ strtolower($user->name . ' ' . $user->email . ' ' . ($user->phone ?? '') . ' ' . $user->role) }}">
                                 <td>
-                                    <strong style="color:#0f172a; display:block;">{{ $user->name }}</strong>
-                                    <span style="font-size:11.5px; color:#64748b;">{{ $user->email }}</span>
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <div style="width:36px; height:36px; border-radius:10px; background:#eff6ff; color:#1d4ed8; display:grid; place-items:center; font-weight:800; font-size:13px; flex-shrink:0;">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <strong style="color:#0f172a; display:block;">{{ $user->name }}</strong>
+                                            <span style="font-size:11.5px; color:#64748b;">{{ $user->email }}</span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
-                                    <span style="font-size:12px; color:#475569;">{{ $user->phone ?? '—' }}</span>
+                                    <span style="font-size:12px; color:#475569;">{{ $user->phone ?: 'Not provided' }}</span>
                                 </td>
                                 <td>
                                     <span class="ad-role-badge role-{{ $user->role }}">
@@ -167,19 +229,48 @@
                                     </span>
                                 </td>
                                 <td>
+                                    @if($isOnline)
+                                        <span class="ad-session-badge session-online">
+                                            <span class="session-dot"></span>
+                                            <span>Logged In ({{ $lastSeenText }})</span>
+                                        </span>
+                                    @else
+                                        <span class="ad-session-badge session-offline">
+                                            <span class="session-dot"></span>
+                                            <span>Registered</span>
+                                        </span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <strong style="font-size:12px; color:#1e293b; display:block;">{{ $recordsSummary }}</strong>
+                                    <span style="font-size:11px; color:#64748b;">{{ \Illuminate\Support\Str::limit($recordsDetail, 42) }}</span>
+                                </td>
+                                <td>
                                     <span style="font-size:11.5px; color:#64748b;">
                                         {{ $user->created_at ? $user->created_at->format('M d, Y') : 'N/A' }}
                                     </span>
                                 </td>
                                 <td style="text-align:right;">
-                                    <div style="display:inline-flex; gap:6px;">
-                                        <button type="button" class="btn-action btn-edit" 
-                                                onclick="openEditUserModal({{ $user->id }}, '{{ addslashes($user->name) }}', '{{ addslashes($user->email) }}', '{{ addslashes($user->phone ?? '') }}', '{{ $user->role }}')">
-                                            ✏️ Edit
+                                    <div style="display:inline-flex; gap:6px; align-items:center;">
+                                        <button type="button"
+                                                class="btn-action btn-view"
+                                                data-user-id="{{ $user->id }}"
+                                                data-user-name="{{ $user->name }}"
+                                                data-user-email="{{ $user->email }}"
+                                                data-user-phone="{{ $user->phone ?: 'Not provided' }}"
+                                                data-user-role="{{ ucfirst($user->role) }}"
+                                                data-user-status="{{ $isOnline ? ('Logged In (' . $lastSeenText . ')') : 'Registered (Offline)' }}"
+                                                data-user-joined="{{ $user->created_at ? $user->created_at->format('F d, Y \a\t H:i') : 'N/A' }}"
+                                                data-user-summary="{{ $recordsSummary }}"
+                                                data-user-detail="{{ $recordsDetail }}"
+                                                data-can-delete="{{ (int) $user->id !== (int) auth()->id() ? '1' : '0' }}"
+                                                data-delete-url="{{ route('admin.users.delete', $user->id, false) }}"
+                                                onclick="openViewUserModal(this)">
+                                            👁️ View
                                         </button>
 
-                                        @if($user->id !== auth()->id())
-                                            <form method="POST" action="{{ route('admin.users.delete', $user->id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete the user profile for {{ addslashes($user->name) }}? This will permanently delete their account and unassign related records.');">
+                                        @if((int) $user->id !== (int) auth()->id())
+                                            <form method="POST" action="{{ route('admin.users.delete', $user->id, false) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to permanently delete the user profile for {{ addslashes($user->name) }}?');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn-action btn-delete">
@@ -187,7 +278,7 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <span style="font-size:11px; color:#94a3b8; padding:6px 8px;">(Current Admin)</span>
+                                            <span style="font-size:11px; color:#64748b; font-weight:700; padding:6px 8px; background:#f1f5f9; border-radius:6px;">Active Admin</span>
                                         @endif
                                     </div>
                                 </td>
@@ -196,28 +287,26 @@
                     </tbody>
                 </table>
             </div>
-
-            <div style="margin-top:18px;">
-                {{ $users->appends(request()->query())->links() }}
-            </div>
         </div>
     </div>
 
-    <!-- TAB 2: ELDER PROFILES MANAGEMENT -->
+    <!-- TAB 2: ELDER PROFILES MANAGEMENT (View & Delete Only) -->
     <div id="tab-elders" class="ad-tab-pane" style="display:none;">
         <div class="ad-card">
             <div class="ad-card-head">
                 <div>
-                    <h2 class="ad-card-title">Elder Care Profiles Management</h2>
-                    <span style="font-size:12px; color:#64748b;">Review all elder profiles, reassign caregivers, update contacts/physicians, or delete profiles</span>
+                    <h2 class="ad-card-title">Elder Care Profiles Directory</h2>
+                    <span style="font-size:12px; color:#64748b;">Inspect full elder care profiles in read-only view or permanently remove profiles</span>
                 </div>
+                <input type="text" id="elderSearchInput" class="ad-search-input" placeholder="Search elder profiles by name or residence..." oninput="filterEldersTable()">
             </div>
 
             <div style="overflow-x:auto;">
-                <table class="ad-table">
+                <table class="ad-table" id="adminEldersTable">
                     <thead>
                         <tr>
                             <th>Elder Patient</th>
+                            <th>Family Owner</th>
                             <th>Residence</th>
                             <th>Assigned Caregiver</th>
                             <th>Primary Physician</th>
@@ -227,10 +316,11 @@
                     </thead>
                     <tbody>
                         @forelse($elders as $elder)
-                            <tr>
+                            <tr class="ad-elder-row"
+                                data-search="{{ strtolower($elder->full_name . ' ' . ($elder->residence ?? '') . ' ' . ($elder->creator->name ?? '') . ' ' . ($elder->assignedCaregiver->name ?? '')) }}">
                                 <td>
                                     <div style="display:flex; align-items:center; gap:10px;">
-                                        <div style="width:36px; height:36px; border-radius:10px; background:#eff6ff; color:#2563eb; display:grid; place-items:center; font-weight:800; font-size:13px; flex-shrink:0; overflow:hidden;">
+                                        <div style="width:38px; height:38px; border-radius:10px; background:#eff6ff; color:#2563eb; display:grid; place-items:center; font-weight:800; font-size:13px; flex-shrink:0; overflow:hidden;">
                                             @if($elder->photo_url)
                                                 <img src="{{ $elder->photo_url }}" alt="{{ $elder->full_name }}" style="width:100%; height:100%; object-fit:cover;" onerror="if (!this.dataset.fb1) { this.dataset.fb1 = '1'; this.src = '{{ asset('storage/' . $elder->photo_path) }}'; } else if (!this.dataset.fb2) { this.dataset.fb2 = '1'; this.src = '{{ asset('elder_photos/' . basename($elder->photo_path)) }}'; } else { this.style.display='none'; this.nextElementSibling.style.display='grid'; }">
                                                 <span style="display:none; width:100%; height:100%; place-items:center;">{{ strtoupper(substr($elder->full_name, 0, 1)) }}</span>
@@ -243,6 +333,10 @@
                                             <span style="font-size:11px; color:#64748b;">{{ $elder->age ? $elder->age . ' yrs' : 'Elder' }} · {{ $elder->gender ?? 'Not Specified' }}</span>
                                         </div>
                                     </div>
+                                </td>
+                                <td>
+                                    <strong style="font-size:12px; color:#1e293b; display:block;">{{ $elder->creator->name ?? 'Family Account' }}</strong>
+                                    <span style="font-size:10.5px; color:#64748b;">{{ $elder->creator->email ?? '' }}</span>
                                 </td>
                                 <td>
                                     <span style="font-size:12px; color:#475569;">{{ $elder->residence ?? '—' }}</span>
@@ -264,17 +358,12 @@
                                     <span style="font-size:10.5px; color:#64748b;">{{ $elder->emergency_contact_phone }}</span>
                                 </td>
                                 <td style="text-align:right;">
-                                    <div style="display:inline-flex; gap:6px;">
-                                        <a href="{{ route('elder.show', $elder->id) }}" class="btn-action btn-view" title="Inspect Profile">
+                                    <div style="display:inline-flex; gap:6px; align-items:center;">
+                                        <a href="{{ route('elder.show', $elder->id, false) }}" class="btn-action btn-view" title="View Complete Elder Profile">
                                             👁️ View
                                         </a>
 
-                                        <button type="button" class="btn-action btn-edit"
-                                                onclick="openEditElderModal({{ $elder->id }}, '{{ addslashes($elder->full_name) }}', '{{ $elder->assigned_caregiver_id }}', '{{ addslashes($elder->residence ?? '') }}', '{{ addslashes($elder->physician_name ?? '') }}', '{{ addslashes($elder->physician_phone ?? '') }}', '{{ addslashes($elder->emergency_contact_name) }}', '{{ addslashes($elder->emergency_contact_phone) }}')">
-                                            ✏️ Edit Info
-                                        </button>
-
-                                        <form method="POST" action="{{ route('admin.elders.delete', $elder->id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete the ENTIRE profile for {{ addslashes($elder->full_name) }}? This will permanently delete all associated care visits, sentiment records, and clinical logs.');">
+                                        <form method="POST" action="{{ route('admin.elders.delete', $elder->id, false) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to permanently delete the elder profile for {{ addslashes($elder->full_name) }}?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn-action btn-delete">
@@ -286,15 +375,11 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" style="text-align:center; padding:32px; color:#94a3b8;">No elder profiles found.</td>
+                                <td colspan="7" style="text-align:center; padding:32px; color:#94a3b8;">No elder profiles found.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
-            </div>
-
-            <div style="margin-top:18px;">
-                {{ $elders->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
@@ -318,7 +403,7 @@
                         </div>
                         <div style="flex:1;">
                             <strong style="font-size:13px; color:#0f172a; display:block;">{{ $visit->caregiver->name ?? 'Caregiver' }} logged visit for {{ $visit->elder->full_name ?? 'Elder' }}</strong>
-                            <p style="margin:4px 0 6px; font-size:12px; color:#64748b;">"{{ \Illuminate\Support\Str::limit($visit->visit_note ?? 'Routine care completed.', 110) }}"</p>
+                            <p style="margin:4px 0 6px; font-size:12px; color:#64748b;">"{{ \Illuminate\Support\Str::limit($visit->visit_note ?? 'Routine care completed.', 120) }}"</p>
                             @if($visit->sentimentResult)
                                 <span style="font-size:11px; font-weight:700; color: {{ $visit->sentimentResult->flagged ? '#b91c1c' : '#15803d' }};">
                                     VADER: {{ ucfirst($visit->sentimentResult->classification) }} (Score: {{ $visit->sentimentResult->compound_score }})
@@ -326,6 +411,11 @@
                             @endif
                             <small style="color:#94a3b8; font-size:11px; margin-left:8px;">{{ $visit->created_at ? $visit->created_at->diffForHumans() : 'Just now' }}</small>
                         </div>
+                        @if($visit->elder)
+                            <a href="{{ route('elder.show', $visit->elder->id, false) }}" class="btn-action btn-view">
+                                👁️ View Elder
+                            </a>
+                        @endif
                     </div>
                 @empty
                     <p style="color:#94a3b8; font-size:13px; margin:0;">No care visits recorded recently.</p>
@@ -336,104 +426,67 @@
 
 </div>
 
-<!-- MODAL 1: EDIT USER (Admin edits minor user info) -->
-<div id="modalEditUser" class="ad-modal-backdrop">
+<!-- MODAL: VIEW USER PROFILE DETAILS (Read-Only Inspection + Delete Option) -->
+<div id="modalViewUser" class="ad-modal-backdrop">
     <div class="ad-modal">
         <div class="ad-modal-head">
-            <h3>Edit User Account</h3>
-            <button type="button" class="ad-modal-close" onclick="closeModal('modalEditUser')">&times;</button>
+            <h3>System User Profile Inspection</h3>
+            <button type="button" class="ad-modal-close" onclick="closeModal('modalViewUser')">&times;</button>
         </div>
-        <form id="formEditUser" method="POST" action="">
-            @csrf
-            @method('PUT')
-            <div class="ad-modal-body">
-                <div class="ad-form-group">
-                    <label for="edit_user_name">Full Name *</label>
-                    <input type="text" id="edit_user_name" name="name" required>
+        <div class="ad-modal-body">
+            <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #f1f5f9;">
+                <div id="view_user_avatar" style="width:52px; height:52px; border-radius:14px; background:#eff6ff; color:#1d4ed8; display:grid; place-items:center; font-weight:800; font-size:20px; flex-shrink:0;">
+                    U
                 </div>
-                <div class="ad-form-group">
-                    <label for="edit_user_email">Email Address *</label>
-                    <input type="email" id="edit_user_email" name="email" required>
-                </div>
-                <div class="ad-form-group">
-                    <label for="edit_user_phone">Phone Number</label>
-                    <input type="text" id="edit_user_phone" name="phone">
-                </div>
-                <div class="ad-form-group">
-                    <label for="edit_user_role">Account Role *</label>
-                    <select id="edit_user_role" name="role" required>
-                        <option value="family">Family Member</option>
-                        <option value="caregiver">Professional Caregiver</option>
-                        <option value="admin">Administrator</option>
-                    </select>
+                <div>
+                    <h4 id="view_user_name" style="margin:0 0 4px; font:800 18px 'Manrope', sans-serif; color:#0f172a;">User Name</h4>
+                    <span id="view_user_email" style="font-size:13px; color:#64748b;">user@example.com</span>
                 </div>
             </div>
-            <div class="ad-modal-foot">
-                <button type="button" class="btn-action btn-edit" style="padding:8px 14px;" onclick="closeModal('modalEditUser')">Cancel</button>
-                <button type="submit" class="btn-action" style="background:#0f172a; color:#fff; padding:8px 16px;">Save Changes</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<!-- MODAL 2: EDIT ELDER MINOR INFO (Admin edits minor info: caregiver assignment, contacts, physician) -->
-<div id="modalEditElder" class="ad-modal-backdrop">
-    <div class="ad-modal">
-        <div class="ad-modal-head">
-            <h3>Edit Elder Details (Administrative)</h3>
-            <button type="button" class="ad-modal-close" onclick="closeModal('modalEditElder')">&times;</button>
+            <div class="ad-detail-grid">
+                <div class="ad-detail-box">
+                    <small>Account Role</small>
+                    <strong id="view_user_role">Family</strong>
+                </div>
+                <div class="ad-detail-box">
+                    <small>Session Status</small>
+                    <strong id="view_user_status">Logged In</strong>
+                </div>
+                <div class="ad-detail-box">
+                    <small>Phone Number</small>
+                    <strong id="view_user_phone">Not provided</strong>
+                </div>
+                <div class="ad-detail-box">
+                    <small>Registered On</small>
+                    <strong id="view_user_joined">N/A</strong>
+                </div>
+            </div>
+
+            <div class="ad-detail-box" style="margin-bottom:4px;">
+                <small>Linked Care Records & Activity</small>
+                <strong id="view_user_summary" style="display:block; margin-bottom:4px;">0 Records</strong>
+                <span id="view_user_detail" style="font-size:12.5px; color:#475569;">—</span>
+            </div>
         </div>
-        <form id="formEditElder" method="POST" action="">
-            @csrf
-            @method('PUT')
-            <div class="ad-modal-body">
-                <div class="ad-form-group">
-                    <label>Elder Full Name</label>
-                    <input type="text" id="edit_elder_name_display" disabled style="background:#f1f5f9; color:#64748b;">
-                </div>
-                <div class="ad-form-group">
-                    <label for="edit_elder_caregiver">Assigned Caregiver</label>
-                    <select id="edit_elder_caregiver" name="assigned_caregiver_id">
-                        <option value="">-- Unassigned --</option>
-                        @foreach($allCaregivers as $cg)
-                            <option value="{{ $cg->id }}">{{ $cg->name }} ({{ $cg->email }})</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="ad-form-group">
-                    <label for="edit_elder_residence">Residence / Location</label>
-                    <input type="text" id="edit_elder_residence" name="residence" placeholder="e.g. Fedha, Nairobi">
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="ad-form-group">
-                        <label for="edit_elder_physician">Primary Physician</label>
-                        <input type="text" id="edit_elder_physician" name="physician_name">
-                    </div>
-                    <div class="ad-form-group">
-                        <label for="edit_elder_physician_phone">Physician Phone</label>
-                        <input type="text" id="edit_elder_physician_phone" name="physician_phone">
-                    </div>
-                </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="ad-form-group">
-                        <label for="edit_elder_emergency_name">Emergency Contact *</label>
-                        <input type="text" id="edit_elder_emergency_name" name="emergency_contact_name" required>
-                    </div>
-                    <div class="ad-form-group">
-                        <label for="edit_elder_emergency_phone">Emergency Phone *</label>
-                        <input type="text" id="edit_elder_emergency_phone" name="emergency_contact_phone" required>
-                    </div>
-                </div>
-            </div>
-            <div class="ad-modal-foot">
-                <button type="button" class="btn-action btn-edit" style="padding:8px 14px;" onclick="closeModal('modalEditElder')">Cancel</button>
-                <button type="submit" class="btn-action" style="background:#0f172a; color:#fff; padding:8px 16px;">Save Changes</button>
-            </div>
-        </form>
+        <div class="ad-modal-foot">
+            <form id="formModalDeleteUser" method="POST" action="" style="margin:0;" onsubmit="return confirm('Are you sure you want to permanently delete this user profile?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" id="btnModalDeleteUser" class="btn-action btn-delete" style="padding:8px 14px;">
+                    🗑️ Delete User Profile
+                </button>
+            </form>
+            <button type="button" class="btn-action btn-neutral" style="padding:8px 16px;" onclick="closeModal('modalViewUser')">
+                Close
+            </button>
+        </div>
     </div>
 </div>
 
 <script>
+let currentUserFilter = 'all';
+
 function switchAdTab(tabId, btn) {
     document.querySelectorAll('.ad-tab-pane').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.ad-tab-btn').forEach(el => el.classList.remove('active'));
@@ -441,27 +494,62 @@ function switchAdTab(tabId, btn) {
     btn.classList.add('active');
 }
 
-function openEditUserModal(id, name, email, phone, role) {
-    const form = document.getElementById('formEditUser');
-    form.action = '/admin/users/' + id;
-    document.getElementById('edit_user_name').value = name;
-    document.getElementById('edit_user_email').value = email;
-    document.getElementById('edit_user_phone').value = phone || '';
-    document.getElementById('edit_user_role').value = role;
-    document.getElementById('modalEditUser').style.display = 'flex';
+function filterUsersTable(filterType, btn) {
+    currentUserFilter = filterType;
+    document.querySelectorAll('.ad-filter-pill').forEach(el => el.classList.remove('active'));
+    btn.classList.add('active');
+    applyUserFilters();
 }
 
-function openEditElderModal(id, name, caregiverId, residence, physicianName, physicianPhone, emergencyName, emergencyPhone) {
-    const form = document.getElementById('formEditElder');
-    form.action = '/admin/elders/' + id + '/minor';
-    document.getElementById('edit_elder_name_display').value = name;
-    document.getElementById('edit_elder_caregiver').value = caregiverId || '';
-    document.getElementById('edit_elder_residence').value = residence || '';
-    document.getElementById('edit_elder_physician').value = physicianName || '';
-    document.getElementById('edit_elder_physician_phone').value = physicianPhone || '';
-    document.getElementById('edit_elder_emergency_name').value = emergencyName;
-    document.getElementById('edit_elder_emergency_phone').value = emergencyPhone;
-    document.getElementById('modalEditElder').style.display = 'flex';
+function applyUserFilters() {
+    const query = (document.getElementById('userSearchInput').value || '').toLowerCase().trim();
+    document.querySelectorAll('.ad-user-row').forEach(row => {
+        const role = row.getAttribute('data-role');
+        const online = row.getAttribute('data-online') === '1';
+        const searchBlob = row.getAttribute('data-search') || '';
+
+        let matchesFilter = true;
+        if (currentUserFilter === 'online') {
+            matchesFilter = online;
+        } else if (currentUserFilter !== 'all') {
+            matchesFilter = (role === currentUserFilter);
+        }
+
+        const matchesQuery = !query || searchBlob.includes(query);
+        row.style.display = (matchesFilter && matchesQuery) ? '' : 'none';
+    });
+}
+
+function filterEldersTable() {
+    const query = (document.getElementById('elderSearchInput').value || '').toLowerCase().trim();
+    document.querySelectorAll('.ad-elder-row').forEach(row => {
+        const searchBlob = row.getAttribute('data-search') || '';
+        row.style.display = (!query || searchBlob.includes(query)) ? '' : 'none';
+    });
+}
+
+function openViewUserModal(btn) {
+    const name = btn.getAttribute('data-user-name') || 'User';
+    document.getElementById('view_user_avatar').textContent = name.charAt(0).toUpperCase();
+    document.getElementById('view_user_name').textContent = name;
+    document.getElementById('view_user_email').textContent = btn.getAttribute('data-user-email') || '';
+    document.getElementById('view_user_phone').textContent = btn.getAttribute('data-user-phone') || 'Not provided';
+    document.getElementById('view_user_role').textContent = btn.getAttribute('data-user-role') || '';
+    document.getElementById('view_user_status').textContent = btn.getAttribute('data-user-status') || '';
+    document.getElementById('view_user_joined').textContent = btn.getAttribute('data-user-joined') || '';
+    document.getElementById('view_user_summary').textContent = btn.getAttribute('data-user-summary') || '';
+    document.getElementById('view_user_detail').textContent = btn.getAttribute('data-user-detail') || '';
+
+    const canDelete = btn.getAttribute('data-can-delete') === '1';
+    const deleteForm = document.getElementById('formModalDeleteUser');
+    if (canDelete) {
+        deleteForm.action = btn.getAttribute('data-delete-url');
+        deleteForm.style.display = 'block';
+    } else {
+        deleteForm.style.display = 'none';
+    }
+
+    document.getElementById('modalViewUser').style.display = 'flex';
 }
 
 function closeModal(modalId) {
@@ -472,6 +560,6 @@ window.onclick = function(e) {
     if (e.target.classList.contains('ad-modal-backdrop')) {
         e.target.style.display = 'none';
     }
-}
+};
 </script>
 @endsection
