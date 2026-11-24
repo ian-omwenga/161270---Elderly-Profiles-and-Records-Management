@@ -195,11 +195,9 @@ def run_threshold_sensitivity_analysis(df: pd.DataFrame) -> pd.DataFrame:
         })
         
     sensitivity_df = pd.DataFrame(records)
-    print("\n" + "=" * 95)
-    print("                      THRESHOLD SENSITIVITY ANALYSIS (NEGATIVE CLASS)")
-    print("=" * 95)
+    print("\nThreshold Sensitivity Analysis (Negative Class):")
     print(sensitivity_df[["Negative Threshold", "Precision", "Recall (Sensitivity)", "F1-Score", "Specificity", "Flagged Alerts (TP+FP)", "Missed Alerts (FN)"]].to_string(index=False))
-    print("=" * 95 + "\n")
+    print()
     return sensitivity_df
 
 
@@ -242,11 +240,9 @@ def run_lexicon_impact_analysis(df: pd.DataFrame, output_image: str = "vader_wor
         "Cumulative Impact Score": [f"{imp:.2f}" for imp in top_impacts]
     })
     
-    print("\n" + "-" * 75)
-    print("                 TOP 10 MOST IMPACTFUL NEGATIVE WORDS")
-    print("-" * 75)
+    print("\nTop 10 Most Impactful Negative Words:")
     print(impact_table.to_string(index=False))
-    print("-" * 75 + "\n")
+    print()
 
     # Plot Horizontal Bar Chart
     sns.set_theme(style="whitegrid", font="sans-serif")
@@ -312,18 +308,13 @@ def run_classification_report(df: pd.DataFrame):
         zero_division=0
     )
     
-    print("\n" + "=" * 65)
-    print("             VADER 3-CLASS CLASSIFICATION REPORT")
-    print("=" * 65)
+    print("\nVADER 3-Class Classification Report:")
     print(report_str)
-    print("=" * 65 + "\n")
     return report_dict
 
 
 def main():
-    print("\n" + "=" * 70)
-    print(" ELDERCARE CAPSTONE: CHAPTER 5 VADER EVALUATION PIPELINE")
-    print("=" * 70)
+    print("\nElderCare Capstone - Chapter 5 VADER Evaluation Pipeline")
     
     # 1. Load Data
     df = load_dataset()
