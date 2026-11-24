@@ -5,47 +5,47 @@
 
 @section('content')
 <style>
-.ad-container { max-width: 1450px; margin: 0 auto; padding: 24px clamp(16px, 2.5vw, 36px) 40px; color: #1e293b; }
-.ad-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
-.ad-header-info h1 { font: 800 clamp(22px, 2.5vw, 30px)/1.2 'Manrope', sans-serif; color: #0f172a; margin: 0 0 6px; }
-.ad-header-info p { margin: 0; color: #64748b; font-size: 13px; }
-.ad-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; }
-.ad-kpi-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02); }
-.ad-kpi-card small { display: block; font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-.ad-kpi-card strong { font: 800 28px 'Manrope', sans-serif; color: #0f172a; }
-.ad-kpi-card p { margin: 4px 0 0; font-size: 11px; color: #16a34a; font-weight: 700; }
+.adm-container { max-width: 1450px; margin: 0 auto; padding: 24px clamp(16px, 2.5vw, 36px) 40px; color: #1e293b; }
+.adm-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+.adm-header-info h1 { font: 800 clamp(22px, 2.5vw, 30px)/1.2 'Manrope', sans-serif; color: #0f172a; margin: 0 0 6px; }
+.adm-header-info p { margin: 0; color: #64748b; font-size: 13px; }
+.adm-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; }
+.adm-kpi-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02); }
+.adm-kpi-card small { display: block; font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.adm-kpi-card strong { font: 800 28px 'Manrope', sans-serif; color: #0f172a; }
+.adm-kpi-card p { margin: 4px 0 0; font-size: 11px; color: #16a34a; font-weight: 700; }
 
 /* Tabs */
-.ad-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; }
-.ad-tab-btn { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
-.ad-tab-btn:hover { background: #f8fafc; color: #0f172a; }
-.ad-tab-btn.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
-.ad-tab-badge { padding: 2px 7px; border-radius: 9999px; font-size: 11px; background: rgba(255,255,255,0.2); }
-.ad-tab-btn:not(.active) .ad-tab-badge { background: #e2e8f0; color: #334155; }
+.adm-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; }
+.adm-tab-btn { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
+.adm-tab-btn:hover { background: #f8fafc; color: #0f172a; }
+.adm-tab-btn.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
+.adm-tab-badge { padding: 2px 7px; border-radius: 9999px; font-size: 11px; background: rgba(255,255,255,0.2); }
+.adm-tab-btn:not(.active) .adm-tab-badge { background: #e2e8f0; color: #334155; }
 
 /* Filter Bar & Search */
-.ad-filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; }
-.ad-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
-.ad-filter-pill { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
-.ad-filter-pill:hover { background: #f1f5f9; color: #0f172a; }
-.ad-filter-pill.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
-.ad-search-input { padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 12.5px; color: #0f172a; background: #ffffff; min-width: 240px; outline: none; }
-.ad-search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+.adm-filter-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; }
+.adm-filter-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.adm-filter-pill { background: #ffffff; border: 1px solid #cbd5e1; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+.adm-filter-pill:hover { background: #f1f5f9; color: #0f172a; }
+.adm-filter-pill.active { background: #2563eb; color: #ffffff; border-color: #2563eb; }
+.adm-search-input { padding: 8px 14px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 12.5px; color: #0f172a; background: #ffffff; min-width: 240px; outline: none; }
+.adm-search-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
 
 /* Cards & Tables */
-.ad-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03); margin-bottom: 24px; }
-.ad-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-.ad-card-title { font: 800 18px 'Manrope', sans-serif; color: #0f172a; margin: 0; }
-.ad-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
-.ad-table th { background: #f8fafc; padding: 12px 14px; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; }
-.ad-table td { padding: 14px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
-.ad-role-badge { padding: 4px 9px; border-radius: 6px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
+.adm-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 24px; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03); margin-bottom: 24px; }
+.adm-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.adm-card-title { font: 800 18px 'Manrope', sans-serif; color: #0f172a; margin: 0; }
+.adm-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+.adm-table th { background: #f8fafc; padding: 12px 14px; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; }
+.adm-table td { padding: 14px; border-bottom: 1px solid #f1f5f9; color: #334155; vertical-align: middle; }
+.adm-role-badge { padding: 4px 9px; border-radius: 6px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; display: inline-block; }
 .role-family { background: #e0f2fe; color: #0369a1; }
 .role-caregiver { background: #fef3c7; color: #b45309; }
 .role-admin { background: #fee2e2; color: #b91c1c; }
 
 /* Session Status Badges */
-.ad-session-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
+.adm-session-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
 .session-online { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
 .session-offline { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
 .session-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
@@ -62,26 +62,26 @@
 .btn-neutral:hover { background: #e2e8f0; color: #0f172a; }
 
 /* Modal */
-.ad-modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-.ad-modal { background: #ffffff; border-radius: 18px; width: 100%; max-width: 560px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; animation: popIn 0.2s ease-out; }
-.ad-modal-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; }
-.ad-modal-head h3 { margin: 0; font: 800 18px 'Manrope', sans-serif; color: #0f172a; }
-.ad-modal-close { background: none; border: none; font-size: 22px; color: #94a3b8; cursor: pointer; line-height: 1; }
-.ad-modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
-.ad-modal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 24px; background: #f8fafc; border-top: 1px solid #f1f5f9; }
+.adm-modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+.adm-modal { background: #ffffff; border-radius: 18px; width: 100%; max-width: 560px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04); overflow: hidden; animation: popIn 0.2s ease-out; }
+.adm-modal-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #f1f5f9; }
+.adm-modal-head h3 { margin: 0; font: 800 18px 'Manrope', sans-serif; color: #0f172a; }
+.adm-modal-close { background: none; border: none; font-size: 22px; color: #94a3b8; cursor: pointer; line-height: 1; }
+.adm-modal-body { padding: 24px; max-height: 75vh; overflow-y: auto; }
+.adm-modal-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 24px; background: #f8fafc; border-top: 1px solid #f1f5f9; }
 
-.ad-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
-.ad-detail-box { padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; }
-.ad-detail-box small { display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
-.ad-detail-box strong { font-size: 13.5px; color: #0f172a; word-break: break-word; }
+.adm-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+.adm-detail-box { padding: 12px 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; }
+.adm-detail-box small { display: block; font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.adm-detail-box strong { font-size: 13.5px; color: #0f172a; word-break: break-word; }
 
 @keyframes popIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 </style>
 
-<div class="ad-container">
+<div class="adm-container">
 
-    <div class="ad-header">
-        <div class="ad-header-info">
+    <div class="adm-header">
+        <div class="adm-header-info">
             <h1>Welcome back, {{ auth()->user()->name }}</h1>
             <p>System Administrator Console · View and manage all registered & logged-in users and elder care profiles</p>
         </div>
@@ -103,23 +103,23 @@
     @endif
 
     <!-- 4 High Level Metrics -->
-    <div class="ad-kpi-grid">
-        <div class="ad-kpi-card">
+    <div class="adm-kpi-grid">
+        <div class="adm-kpi-card">
             <small>Registered & Logged-In Users</small>
             <strong>{{ $totalUsers }}</strong>
             <p>🟢 {{ $loggedInCount ?? 1 }} Logged In · {{ $totalCaregivers }} Caregivers · {{ $totalFamilies }} Families</p>
         </div>
-        <div class="ad-kpi-card">
+        <div class="adm-kpi-card">
             <small>Total Elders Registered</small>
             <strong>{{ $totalElders }}</strong>
             <p>Active Patient Care Profiles</p>
         </div>
-        <div class="ad-kpi-card">
+        <div class="adm-kpi-card">
             <small>Avg. Sentiment Polarity</small>
             <strong>{{ $avgSentimentPercent }}%</strong>
             <p>Lexicon-scored across visit logs</p>
         </div>
-        <div class="ad-kpi-card">
+        <div class="adm-kpi-card">
             <small>Unresolved Alerts</small>
             <strong style="color: {{ $unresolvedAlerts > 0 ? '#b91c1c' : '#0f172a' }};">{{ $unresolvedAlerts }}</strong>
             <p style="color: {{ $unresolvedAlerts > 0 ? '#b91c1c' : '#64748b' }};">Pending family review</p>
@@ -127,55 +127,55 @@
     </div>
 
     <!-- Navigation Tabs -->
-    <div class="ad-tabs">
-        <button type="button" class="ad-tab-btn active" onclick="switchAdTab('tab-users', this)">
+    <div class="adm-tabs">
+        <button type="button" class="adm-tab-btn active" onclick="switchAdTab('tab-users', this)">
             <span>👥 Registered & Logged-In Users</span>
-            <span class="ad-tab-badge">{{ $totalUsers }}</span>
+            <span class="adm-tab-badge">{{ $totalUsers }}</span>
         </button>
-        <button type="button" class="ad-tab-btn" onclick="switchAdTab('tab-elders', this)">
+        <button type="button" class="adm-tab-btn" onclick="switchAdTab('tab-elders', this)">
             <span>🩺 Elder Care Profiles</span>
-            <span class="ad-tab-badge">{{ $totalElders }}</span>
+            <span class="adm-tab-badge">{{ $totalElders }}</span>
         </button>
-        <button type="button" class="ad-tab-btn" onclick="switchAdTab('tab-activity', this)">
+        <button type="button" class="adm-tab-btn" onclick="switchAdTab('tab-activity', this)">
             <span>📋 Live Care Activity</span>
-            <span class="ad-tab-badge">{{ $recentVisits->count() }}</span>
+            <span class="adm-tab-badge">{{ $recentVisits->count() }}</span>
         </button>
     </div>
 
     <!-- TAB 1: SYSTEM USERS MANAGEMENT (View & Delete Only) -->
-    <div id="tab-users" class="ad-tab-pane">
-        <div class="ad-card">
-            <div class="ad-card-head">
+    <div id="tab-users" class="adm-tab-pane">
+        <div class="adm-card">
+            <div class="adm-card-head">
                 <div>
-                    <h2 class="ad-card-title">System Users Directory (Registered & Logged-In)</h2>
+                    <h2 class="adm-card-title">System Users Directory (Registered & Logged-In)</h2>
                     <span style="font-size:12px; color:#64748b;">Inspect user profiles, monitor live login status, or permanently remove accounts</span>
                 </div>
             </div>
 
             <!-- Interactive Filter & Search Bar -->
-            <div class="ad-filter-bar">
-                <div class="ad-filter-pills">
-                    <button type="button" class="ad-filter-pill active" onclick="filterUsersTable('all', this)">
+            <div class="adm-filter-bar">
+                <div class="adm-filter-pills">
+                    <button type="button" class="adm-filter-pill active" onclick="filterUsersTable('all', this)">
                         All Registered ({{ $totalUsers }})
                     </button>
-                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('online', this)">
+                    <button type="button" class="adm-filter-pill" onclick="filterUsersTable('online', this)">
                         🟢 Currently Logged In ({{ $loggedInCount ?? 1 }})
                     </button>
-                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('family', this)">
+                    <button type="button" class="adm-filter-pill" onclick="filterUsersTable('family', this)">
                         Family Members ({{ $totalFamilies }})
                     </button>
-                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('caregiver', this)">
+                    <button type="button" class="adm-filter-pill" onclick="filterUsersTable('caregiver', this)">
                         Caregivers ({{ $totalCaregivers }})
                     </button>
-                    <button type="button" class="ad-filter-pill" onclick="filterUsersTable('admin', this)">
+                    <button type="button" class="adm-filter-pill" onclick="filterUsersTable('admin', this)">
                         Administrators ({{ $totalAdmins ?? 1 }})
                     </button>
                 </div>
-                <input type="text" id="userSearchInput" class="ad-search-input" placeholder="Search users by name, email, or phone..." oninput="applyUserFilters()">
+                <input type="text" id="userSearchInput" class="adm-search-input" placeholder="Search users by name, email, or phone..." oninput="applyUserFilters()">
             </div>
 
             <div style="overflow-x:auto;">
-                <table class="ad-table" id="adminUsersTable">
+                <table class="adm-table" id="adminUsersTable">
                     <thead>
                         <tr>
                             <th>User Name & Email</th>
@@ -205,7 +205,7 @@
                                     $recordsDetail = 'Platform Administrator';
                                 }
                             @endphp
-                            <tr class="ad-user-row"
+                            <tr class="adm-user-row"
                                 data-role="{{ $user->role }}"
                                 data-online="{{ $isOnline ? '1' : '0' }}"
                                 data-search="{{ strtolower($user->name . ' ' . $user->email . ' ' . ($user->phone ?? '') . ' ' . $user->role) }}">
@@ -224,18 +224,18 @@
                                     <span style="font-size:12px; color:#475569;">{{ $user->phone ?: 'Not provided' }}</span>
                                 </td>
                                 <td>
-                                    <span class="ad-role-badge role-{{ $user->role }}">
+                                    <span class="adm-role-badge role-{{ $user->role }}">
                                         {{ ucfirst($user->role) }}
                                     </span>
                                 </td>
                                 <td>
                                     @if($isOnline)
-                                        <span class="ad-session-badge session-online">
+                                        <span class="adm-session-badge session-online">
                                             <span class="session-dot"></span>
                                             <span>Logged In ({{ $lastSeenText }})</span>
                                         </span>
                                     @else
-                                        <span class="ad-session-badge session-offline">
+                                        <span class="adm-session-badge session-offline">
                                             <span class="session-dot"></span>
                                             <span>Registered</span>
                                         </span>
@@ -291,18 +291,18 @@
     </div>
 
     <!-- TAB 2: ELDER PROFILES MANAGEMENT (View & Delete Only) -->
-    <div id="tab-elders" class="ad-tab-pane" style="display:none;">
-        <div class="ad-card">
-            <div class="ad-card-head">
+    <div id="tab-elders" class="adm-tab-pane" style="display:none;">
+        <div class="adm-card">
+            <div class="adm-card-head">
                 <div>
-                    <h2 class="ad-card-title">Elder Care Profiles Directory</h2>
+                    <h2 class="adm-card-title">Elder Care Profiles Directory</h2>
                     <span style="font-size:12px; color:#64748b;">Inspect full elder care profiles in read-only view or permanently remove profiles</span>
                 </div>
-                <input type="text" id="elderSearchInput" class="ad-search-input" placeholder="Search elder profiles by name or residence..." oninput="filterEldersTable()">
+                <input type="text" id="elderSearchInput" class="adm-search-input" placeholder="Search elder profiles by name or residence..." oninput="filterEldersTable()">
             </div>
 
             <div style="overflow-x:auto;">
-                <table class="ad-table" id="adminEldersTable">
+                <table class="adm-table" id="adminEldersTable">
                     <thead>
                         <tr>
                             <th>Elder Patient</th>
@@ -316,7 +316,7 @@
                     </thead>
                     <tbody>
                         @forelse($elders as $elder)
-                            <tr class="ad-elder-row"
+                            <tr class="adm-elder-row"
                                 data-search="{{ strtolower($elder->full_name . ' ' . ($elder->residence ?? '') . ' ' . ($elder->creator->name ?? '') . ' ' . ($elder->assignedCaregiver->name ?? '')) }}">
                                 <td>
                                     <div style="display:flex; align-items:center; gap:10px;">
@@ -385,17 +385,17 @@
     </div>
 
     <!-- TAB 3: LIVE ACTIVITY FEED -->
-    <div id="tab-activity" class="ad-tab-pane" style="display:none;">
-        <div class="ad-card">
-            <div class="ad-card-head">
+    <div id="tab-activity" class="adm-tab-pane" style="display:none;">
+        <div class="adm-card">
+            <div class="adm-card-head">
                 <div>
-                    <h2 class="ad-card-title">Live Care Activity Feed</h2>
+                    <h2 class="adm-card-title">Live Care Activity Feed</h2>
                     <span style="font-size:12px; color:#64748b;">Chronological clinical log submissions and VADER sentiment classifications</span>
                 </div>
                 <span style="font-size:10px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:9999px;">SYSTEM ACTIVE</span>
             </div>
 
-            <div class="ad-feed-list" style="display:flex; flex-direction:column; gap:12px;">
+            <div class="adm-feed-list" style="display:flex; flex-direction:column; gap:12px;">
                 @forelse($recentVisits as $visit)
                     <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; background:#f8fafc; border-radius:12px; border:1px solid #f1f5f9;">
                         <div style="width:38px; height:38px; border-radius:10px; display:grid; place-items:center; font-size:15px; flex-shrink:0; background:#e0f2fe; color:#0369a1;">
@@ -427,13 +427,13 @@
 </div>
 
 <!-- MODAL: VIEW USER PROFILE DETAILS (Read-Only Inspection + Delete Option) -->
-<div id="modalViewUser" class="ad-modal-backdrop">
-    <div class="ad-modal">
-        <div class="ad-modal-head">
+<div id="modalViewUser" class="adm-modal-backdrop">
+    <div class="adm-modal">
+        <div class="adm-modal-head">
             <h3>System User Profile Inspection</h3>
-            <button type="button" class="ad-modal-close" onclick="closeModal('modalViewUser')">&times;</button>
+            <button type="button" class="adm-modal-close" onclick="closeModal('modalViewUser')">&times;</button>
         </div>
-        <div class="ad-modal-body">
+        <div class="adm-modal-body">
             <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #f1f5f9;">
                 <div id="view_user_avatar" style="width:52px; height:52px; border-radius:14px; background:#eff6ff; color:#1d4ed8; display:grid; place-items:center; font-weight:800; font-size:20px; flex-shrink:0;">
                     U
@@ -444,32 +444,32 @@
                 </div>
             </div>
 
-            <div class="ad-detail-grid">
-                <div class="ad-detail-box">
+            <div class="adm-detail-grid">
+                <div class="adm-detail-box">
                     <small>Account Role</small>
                     <strong id="view_user_role">Family</strong>
                 </div>
-                <div class="ad-detail-box">
+                <div class="adm-detail-box">
                     <small>Session Status</small>
                     <strong id="view_user_status">Logged In</strong>
                 </div>
-                <div class="ad-detail-box">
+                <div class="adm-detail-box">
                     <small>Phone Number</small>
                     <strong id="view_user_phone">Not provided</strong>
                 </div>
-                <div class="ad-detail-box">
+                <div class="adm-detail-box">
                     <small>Registered On</small>
                     <strong id="view_user_joined">N/A</strong>
                 </div>
             </div>
 
-            <div class="ad-detail-box" style="margin-bottom:4px;">
+            <div class="adm-detail-box" style="margin-bottom:4px;">
                 <small>Linked Care Records & Activity</small>
                 <strong id="view_user_summary" style="display:block; margin-bottom:4px;">0 Records</strong>
                 <span id="view_user_detail" style="font-size:12.5px; color:#475569;">—</span>
             </div>
         </div>
-        <div class="ad-modal-foot">
+        <div class="adm-modal-foot">
             <form id="formModalDeleteUser" method="POST" action="" style="margin:0;" onsubmit="return confirm('Are you sure you want to permanently delete this user profile?');">
                 @csrf
                 @method('DELETE')
@@ -488,22 +488,22 @@
 let currentUserFilter = 'all';
 
 function switchAdTab(tabId, btn) {
-    document.querySelectorAll('.ad-tab-pane').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.ad-tab-btn').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.adm-tab-pane').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.adm-tab-btn').forEach(el => el.classList.remove('active'));
     document.getElementById(tabId).style.display = 'block';
     btn.classList.add('active');
 }
 
 function filterUsersTable(filterType, btn) {
     currentUserFilter = filterType;
-    document.querySelectorAll('.ad-filter-pill').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.adm-filter-pill').forEach(el => el.classList.remove('active'));
     btn.classList.add('active');
     applyUserFilters();
 }
 
 function applyUserFilters() {
     const query = (document.getElementById('userSearchInput').value || '').toLowerCase().trim();
-    document.querySelectorAll('.ad-user-row').forEach(row => {
+    document.querySelectorAll('.adm-user-row').forEach(row => {
         const role = row.getAttribute('data-role');
         const online = row.getAttribute('data-online') === '1';
         const searchBlob = row.getAttribute('data-search') || '';
@@ -522,7 +522,7 @@ function applyUserFilters() {
 
 function filterEldersTable() {
     const query = (document.getElementById('elderSearchInput').value || '').toLowerCase().trim();
-    document.querySelectorAll('.ad-elder-row').forEach(row => {
+    document.querySelectorAll('.adm-elder-row').forEach(row => {
         const searchBlob = row.getAttribute('data-search') || '';
         row.style.display = (!query || searchBlob.includes(query)) ? '' : 'none';
     });
@@ -557,7 +557,7 @@ function closeModal(modalId) {
 }
 
 window.onclick = function(e) {
-    if (e.target.classList.contains('ad-modal-backdrop')) {
+    if (e.target.classList.contains('adm-modal-backdrop')) {
         e.target.style.display = 'none';
     }
 };

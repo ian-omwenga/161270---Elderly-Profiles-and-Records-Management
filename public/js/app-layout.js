@@ -22,20 +22,4 @@
             });
         });
     }
-
-    // Use a short fade when navigating between local pages; keep downloads and anchors untouched.
-    document.querySelectorAll('a[href]').forEach((link) => {
-        link.addEventListener('click', (event) => {
-            if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-            if (link.target === '_blank' || link.hasAttribute('download')) return;
-            const href = link.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
-            let destination;
-            try { destination = new URL(href, window.location.href); } catch { return; }
-            if (destination.origin !== window.location.origin || destination.pathname === window.location.pathname && destination.search === window.location.search) return;
-            event.preventDefault();
-            document.body.classList.add('ec-leaving');
-            window.setTimeout(() => { window.location.href = destination.href; }, 130);
-        });
-    });
 })();

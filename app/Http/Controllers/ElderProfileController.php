@@ -198,8 +198,7 @@ class ElderProfileController extends Controller
             }
         }
 
-        return redirect()
-            ->route('elder.show', $elder->id)
+        return redirect(route('elder.show', $elder->id, false))
             ->with('status', 'Elder care profile created successfully.');
     }
 
@@ -337,8 +336,7 @@ class ElderProfileController extends Controller
             }
         }
 
-        return redirect()
-            ->route('elder.show', $elder->id)
+        return redirect(route('elder.show', $elder->id, false))
             ->with('status', 'Elder care record updated successfully.');
     }
 }

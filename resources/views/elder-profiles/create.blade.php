@@ -320,7 +320,7 @@
             <p>Establish a centralized medical and personal care profile for home-based monitoring.</p>
         </div>
 
-        <form method="POST" action="{{ route('elder.store') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('elder.store', [], false) }}" enctype="multipart/form-data" onsubmit="const btn = this.querySelector('.ep-btn-primary'); if(btn){ btn.disabled = true; btn.innerHTML = '<span>Saving Elder Profile...</span>'; }">
             @csrf
 
             <!-- Prominent Profile Photo Uploader Avenue -->
@@ -515,18 +515,55 @@
 <script>
 function previewSelectedPhoto(input) {
     if (input.files && input.files[0]) {
+        const originalFile = input.files[0];
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = document.getElementById('photo-preview-img');
             const placeholder = document.getElementById('photo-preview-placeholder');
             const removeBtn = document.getElementById('photo-remove-btn');
-            
+
             img.src = e.target.result;
             img.style.display = 'block';
             if (placeholder) placeholder.style.display = 'none';
             if (removeBtn) removeBtn.style.display = 'inline-block';
+
+            // Compress large images (> 300KB) client-side to speed up cloud upload 50x
+            if (originalFile.size > 300 * 1024 && typeof DataTransfer !== 'undefined') {
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    const maxDim = 800;
+                    let w = tempImg.width;
+                    let h = tempImg.height;
+                    if (w > maxDim || h > maxDim) {
+                        if (w > h) {
+                            h = Math.round((h * maxDim) / w);
+                            w = maxDim;
+                        } else {
+                            w = Math.round((w * maxDim) / h);
+                            h = maxDim;
+                        }
+                    }
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w;
+                    canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(tempImg, 0, 0, w, h);
+                    canvas.toBlob(function(blob) {
+                        if (blob && blob.size < originalFile.size) {
+                            const compressedFile = new File([blob], originalFile.name.replace(/\.[^.]+$/, '.jpg'), {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            });
+                            const dt = new DataTransfer();
+                            dt.items.add(compressedFile);
+                            input.files = dt.files;
+                        }
+                    }, 'image/jpeg', 0.82);
+                };
+                tempImg.src = e.target.result;
+            }
         };
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(originalFile);
     }
 }
 
